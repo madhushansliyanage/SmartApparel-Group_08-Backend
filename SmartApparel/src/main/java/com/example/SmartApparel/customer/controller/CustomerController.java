@@ -1,9 +1,9 @@
-package com.example.customerAMS.controller;
+package com.example.SmartApparel.customer.controller;
 
-import com.example.customerAMS.dto.CustomerDTO;
-import com.example.customerAMS.dto.ResponseDTO;
-import com.example.customerAMS.service.CustomerService;
-import com.example.customerAMS.util.VarList;
+import com.example.SmartApparel.customer.dto.CustomerDTO;
+import com.example.SmartApparel.customer.dto.ResponseDTO;
+import com.example.SmartApparel.customer.service.CustomerService;
+import com.example.SmartApparel.customer.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

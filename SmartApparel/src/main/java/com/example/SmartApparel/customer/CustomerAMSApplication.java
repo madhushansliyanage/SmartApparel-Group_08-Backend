@@ -1,4 +1,4 @@
-package com.example.apparelms;
+package com.example.SmartApparel.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

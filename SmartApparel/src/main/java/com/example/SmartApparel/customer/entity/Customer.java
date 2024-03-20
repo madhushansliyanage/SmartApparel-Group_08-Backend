@@ -1,4 +1,4 @@
-package com.example.customerAMS.entity;
+package com.example.SmartApparel.customer.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

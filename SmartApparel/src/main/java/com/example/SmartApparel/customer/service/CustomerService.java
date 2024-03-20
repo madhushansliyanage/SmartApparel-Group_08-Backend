@@ -1,9 +1,9 @@
-package com.example.customerAMS.service;
+package com.example.SmartApparel.customer.service;
 
-import com.example.customerAMS.dto.CustomerDTO;
-import com.example.customerAMS.entity.Customer;
-import com.example.customerAMS.repo.CustomerRepo;
-import com.example.customerAMS.util.VarList;
+import com.example.SmartApparel.customer.dto.CustomerDTO;
+import com.example.SmartApparel.customer.entity.Customer;
+import com.example.SmartApparel.customer.repo.CustomerRepo;
+import com.example.SmartApparel.customer.util.VarList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
