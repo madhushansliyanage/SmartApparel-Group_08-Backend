@@ -1,9 +1,9 @@
-package com.example.SmartApparel.customer.controller;
+package com.example.SmartApparel.Operations.controller;
 
-import com.example.SmartApparel.customer.dto.ExpenseDTO;
-import com.example.SmartApparel.customer.dto.ResponseDTO;
-import com.example.SmartApparel.customer.service.ExpenseService;
-import com.example.SmartApparel.customer.util.VarList;
+import com.example.SmartApparel.Operations.dto.CustomerDTO;
+import com.example.SmartApparel.Operations.dto.ResponseDTO;
+import com.example.SmartApparel.Operations.service.CustomerService;
+import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,29 +12,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/expense")
-@CrossOrigin
-public class ExpenseController {
+@RequestMapping("api/v1/customer")
+public class CustomerController {
 
+    // Autowired ResponseDTO and CustomerService
     @Autowired
     private ResponseDTO responseDTO;
-
     @Autowired
-    private ExpenseService expenseService;
+    private CustomerService customerService;
 
-    @PostMapping(value = "/saveExpense")
-    public ResponseEntity saveExpense(@RequestBody ExpenseDTO expenseDTO){
+    // Save customer details
+    @PostMapping(value = "/saveCustomer")
+    public ResponseEntity saveCustomer(@RequestBody CustomerDTO customerDTO){
         try {
-            String response = expenseService.saveExpense(expenseDTO);
+            String response = customerService.saveCustomer(customerDTO);
+            // Handle different responses from the service
             if (response.equals("00")){
                 responseDTO.setCode(VarList.RSP_Success);
                 responseDTO.setMessage("Saved Successfully.");
-                responseDTO.setContent(expenseDTO);
+                responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("06")) {
                 responseDTO.setCode(VarList.RSP_Duplicate);
                 responseDTO.setMessage("Already Registered.");
-                responseDTO.setContent(expenseDTO);
+                responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
                 responseDTO.setCode(VarList.RSP_Fail);
@@ -50,19 +51,21 @@ public class ExpenseController {
         }
     }
 
-    @PutMapping (value = "/updateExpense")
-    public ResponseEntity updateExpense(@RequestBody ExpenseDTO expenseDTO){
+    // Update customer details
+    @PutMapping (value = "/updateCustomer")
+    public ResponseEntity updateCustomer(@RequestBody CustomerDTO customerDTO){
         try {
-            String response = expenseService.updateExpense(expenseDTO);
+            String response = customerService.updateCustomer(customerDTO);
+            // Handle different responses from the service
             if (response.equals("00")){
                 responseDTO.setCode(VarList.RSP_Success);
                 responseDTO.setMessage("Saved Successfully.");
-                responseDTO.setContent(expenseDTO);
+                responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("01")) {
                 responseDTO.setCode(VarList.RSP_No_Data_Found);
                 responseDTO.setMessage("Not a Registered Employee");
-                responseDTO.setContent(expenseDTO);
+                responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
                 responseDTO.setCode(VarList.RSP_Fail);
@@ -78,13 +81,15 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping (value = "/viewExpense")
-    public ResponseEntity viewExpense(){
+    // View all customers
+    @GetMapping (value = "/viewCustomer")
+    public ResponseEntity viewCustomer(){
         try {
-            List<ExpenseDTO> expenseDTOList = expenseService.viewExpense();
+            // Retrieve list of customers
+            List<CustomerDTO> customerDTOList = customerService.viewCustomer();
             responseDTO.setCode(VarList.RSP_Success);
             responseDTO.setMessage("Saved Successfully.");
-            responseDTO.setContent(expenseDTOList);
+            responseDTO.setContent(customerDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
         }catch (Exception e){
             responseDTO.setCode(VarList.RSP_Error);
@@ -94,41 +99,44 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping (value = "/searchExpense/{ExpenseId}")
-    public ResponseEntity searchExpense(@PathVariable int ExpenseId){
-        try {
-            ExpenseDTO expenseDTO = expenseService.searchExpense(ExpenseId);
-            if (expenseDTO != null){
-                responseDTO.setCode(VarList.RSP_Success);
-                responseDTO.setMessage("Successful.");
-                responseDTO.setContent(expenseDTO);
-                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
-            }else {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
-                responseDTO.setMessage("No expense available for this ExpenseId.");
-                responseDTO.setContent(null);
-                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-            }
-        }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
-            responseDTO.setMessage(e.getMessage());
-            responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    // Search for a customer by ID
+//    @GetMapping (value = "/searchCustomer/{CustomerId}")
+//    public ResponseEntity searchCustomer(@PathVariable int CustomerId){
+//        try {
+//            CustomerDTO customerDTO = customerService.searchCustomer(CustomerId);
+//            if (customerDTO != null){
+//                responseDTO.setCode(VarList.RSP_Success);
+//                responseDTO.setMessage("Successful.");
+//                responseDTO.setContent(customerDTO);
+//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+//            }else {
+//                responseDTO.setCode(VarList.RSP_No_Data_Found);
+//                responseDTO.setMessage("No customer available for this customerId.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception e){
+//            responseDTO.setCode(VarList.RSP_Error);
+//            responseDTO.setMessage(e.getMessage());
+//            responseDTO.setContent(null);
+//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-    @DeleteMapping (value = "/deleteExpense/{ExpenseId}")
-    public ResponseEntity deleteExpense(@PathVariable int ExpenseId){
+    // Delete a customer by ID
+    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
+    public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
         try {
-            String reponse = expenseService.deleteExpense(ExpenseId);
-            if (reponse.equals("00")){
+            String response = customerService.deleteCustomer(CustomerId);
+            // Handle different responses from the service
+            if (response.equals("00")){
                 responseDTO.setCode(VarList.RSP_Success);
                 responseDTO.setMessage("Successful.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             }else {
                 responseDTO.setCode(VarList.RSP_No_Data_Found);
-                responseDTO.setMessage("No expense available for this ExpenseId.");
+                responseDTO.setMessage("No customer available for this customerId.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
@@ -140,5 +148,3 @@ public class ExpenseController {
         }
     }
 }
-
-

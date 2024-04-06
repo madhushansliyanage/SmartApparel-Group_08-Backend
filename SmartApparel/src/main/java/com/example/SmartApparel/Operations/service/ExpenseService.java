@@ -1,10 +1,10 @@
-package com.example.SmartApparel.customer.service;
+package com.example.SmartApparel.Operations.service;
 
 
-import com.example.SmartApparel.customer.dto.ExpenseDTO;
-import com.example.SmartApparel.customer.entity.Expense;
-import com.example.SmartApparel.customer.repo.ExpenseRepo;
-import com.example.SmartApparel.customer.util.VarList;
+import com.example.SmartApparel.Operations.dto.ExpenseDTO;
+import com.example.SmartApparel.Operations.entity.Expense;
+import com.example.SmartApparel.Operations.repo.ExpenseRepo;
+import com.example.SmartApparel.Operations.util.VarList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
