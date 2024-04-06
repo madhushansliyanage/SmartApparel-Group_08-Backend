@@ -1,4 +1,4 @@
-package com.example.SmartApparel.customer.util;
+package com.example.SmartApparel.Operations.util;
 
 public class VarList {
     public static final String RSP_Success        = "00";

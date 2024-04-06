@@ -1,6 +1,6 @@
-package com.example.SmartApparel.customer.repo;
+package com.example.SmartApparel.Operations.repo;
 
-import com.example.SmartApparel.customer.entity.Expense;
+import com.example.SmartApparel.Operations.entity.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
