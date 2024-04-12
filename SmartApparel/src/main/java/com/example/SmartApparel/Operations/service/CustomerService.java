@@ -56,17 +56,17 @@ public class CustomerService {
     }
 
     // Method to search for a customer by ID
-    public CustomerDTO searchCustomer(int CustomerId){
-        // Check if a customer with the given ID exists
-        if (customerRepo.existsById(CustomerId)){
-            // Retrieve the customer from the database
-            Customer customer = customerRepo.findById(CustomerId).orElse(null);
-            // Map the entity to a DTO and return
-            return modelMapper.map(customer,CustomerDTO.class);
-        }else {
-            return null;
-        }
-    }
+//    public CustomerDTO searchCustomer(int CustomerId){
+//        // Check if a customer with the given ID exists
+//        if (customerRepo.existsById(CustomerId)){
+//            // Retrieve the customer from the database
+//            Customer customer = customerRepo.findById(CustomerId).orElse(null);
+//            // Map the entity to a DTO and return
+//            return modelMapper.map(customer,CustomerDTO.class);
+//        }else {
+//            return null;
+//        }
+//    }
 
     // Method to delete a customer by ID
     public String deleteCustomer(int CustomerId){
