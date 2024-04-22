@@ -124,10 +124,10 @@ public class CustomerController {
 //    }
 
     // Delete a customer
-    @DeleteMapping (value = "/deleteCustomer")
-    public ResponseEntity deleteCustomer(){
+    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
+    public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
         try {
-            String response = customerService.deleteCustomer();
+            String response = customerService.deleteCustomer(CustomerId);
             // Handle different responses from the service
             if (response.equals("00")){
                 responseDTO.setCode(VarList.RSP_Success);
