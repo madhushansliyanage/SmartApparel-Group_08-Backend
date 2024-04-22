@@ -100,10 +100,10 @@ public class OrderController {
     }
 
     // Delete a order
-    @DeleteMapping (value = "/deleteOrder")
-    public ResponseEntity deleteOrder(){
+    @DeleteMapping (value = "/deleteOrder/{OrderId}")
+    public ResponseEntity deleteOrder(@PathVariable int OrderId){
         try {
-            String response = orderService.deleteOrder();
+            String response = orderService.deleteOrder(OrderId);
             // Handle different responses from the service
             if (response.equals("00")){
                 responseDTO.setCode(VarList.RSP_Success);
