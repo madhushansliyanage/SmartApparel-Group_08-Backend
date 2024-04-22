@@ -28,23 +28,23 @@ public class CustomerController {
             String response = customerService.saveCustomer(customerDTO);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("06")) {
-                responseDTO.setCode(VarList.RSP_Duplicate);
+                responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Already Registered.");
                 responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,23 +58,23 @@ public class CustomerController {
             String response = customerService.updateCustomer(customerDTO);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("01")) {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("Not a Registered Employee");
                 responseDTO.setContent(customerDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,12 +87,12 @@ public class CustomerController {
         try {
             // Retrieve list of customers
             List<CustomerDTO> customerDTOList = customerService.viewCustomer();
-            responseDTO.setCode(VarList.RSP_Success);
+            responseDTO.setCode(VarList.RSP_SUCCESS);
             responseDTO.setMessage("Saved Successfully.");
             responseDTO.setContent(customerDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -130,18 +130,18 @@ public class CustomerController {
             String response = customerService.deleteCustomer(CustomerId);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Successful.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             }else {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("No customer available.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -27,11 +27,11 @@ public class OrderService {
     public String saveOrder(OrderDTO orderDTO){
         // Check if a order with the given ID already exists
         if (orderRepo.existsById(orderDTO.getOrderId())){
-            return VarList.RSP_Duplicate;
+            return VarList.RSP_DUPLICATED;
         }else {
             // Save the order to the database
             orderRepo.save(modelMapper.map(orderDTO, Order.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }
     }
 
@@ -41,9 +41,9 @@ public class OrderService {
         if (orderRepo.existsById(orderDTO.getOrderId())){
             // Update the order in the database
             orderRepo.save(modelMapper.map(orderDTO,Order.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 
@@ -61,9 +61,9 @@ public class OrderService {
         if (orderRepo.existsById(OrderId)){
             // Delete the customer from the database
             orderRepo.deleteById(OrderId);
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 }

@@ -27,23 +27,23 @@ public class ExpenseController {
         try {
             String response = expenseService.saveExpense(expenseDTO);
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(expenseDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("06")) {
-                responseDTO.setCode(VarList.RSP_Duplicate);
+                responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Already Registered.");
                 responseDTO.setContent(expenseDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,23 +55,23 @@ public class ExpenseController {
         try {
             String response = expenseService.updateExpense(expenseDTO);
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(expenseDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("01")) {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("Not a Registered Employee");
                 responseDTO.setContent(expenseDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -82,12 +82,12 @@ public class ExpenseController {
     public ResponseEntity viewExpense(){
         try {
             List<ExpenseDTO> expenseDTOList = expenseService.viewExpense();
-            responseDTO.setCode(VarList.RSP_Success);
+            responseDTO.setCode(VarList.RSP_SUCCESS);
             responseDTO.setMessage("Saved Successfully.");
             responseDTO.setContent(expenseDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,18 +99,18 @@ public class ExpenseController {
         try {
             ExpenseDTO expenseDTO = expenseService.searchExpense(ExpenseId);
             if (expenseDTO != null){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Successful.");
                 responseDTO.setContent(expenseDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             }else {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("No expense available for this ExpenseId.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -122,18 +122,18 @@ public class ExpenseController {
         try {
             String reponse = expenseService.deleteExpense(ExpenseId);
             if (reponse.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Successful.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             }else {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("No expense available for this ExpenseId.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
