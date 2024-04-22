@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface AttendanceRepo extends JpaRepository<Attendance,Integer> {
 
+    // Custom query to search attendance records by date
     @Query(value = "SELECT * FROM Attendance WHERE date=?1",nativeQuery = true)
     List<Attendance> searchAttendanceByDate(Date date);
 }

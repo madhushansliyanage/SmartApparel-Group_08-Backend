@@ -11,9 +11,18 @@ import java.sql.Time;
 @NoArgsConstructor
 @Data
 public class AttendanceDTO {
+    // Attendance ID
     private int attendanceId;
+
+    // Date of the attendance
     private Date date;
+
+    // Time when the employee checked in
     private Time inTime;
+
+    // Time when the employee checked out
     private Time outTime;
+
+    // Employee ID associated with this attendance record
     private String empId;
 }

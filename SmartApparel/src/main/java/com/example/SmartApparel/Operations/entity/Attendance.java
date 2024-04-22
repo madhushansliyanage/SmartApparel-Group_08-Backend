@@ -18,9 +18,13 @@ import java.sql.Time;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int attendanceId;
-    private Date date;
-    private Time inTime;
-    private Time outTime;
-    private String empId;
+    private int attendanceId; // Unique identifier for the attendance record
+
+    private Date date; // Date of the attendance
+
+    private Time inTime; // Time when the employee checked in
+
+    private Time outTime; // Time when the employee checked out
+
+    private String empId; // Employee ID associated with this attendance record
 }

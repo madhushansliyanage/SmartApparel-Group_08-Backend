@@ -12,6 +12,7 @@ public class SmartApparelApplication {
 		SpringApplication.run(SmartApparelApplication.class, args);
 	}
 
+	// Configures and provides an instance of ModelMapper as a Spring bean
 	@Bean
 	public ModelMapper modelMapper(){
 		return new ModelMapper();
