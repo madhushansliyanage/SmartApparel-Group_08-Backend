@@ -1,9 +1,9 @@
-package com.example.SmartApparel.hrmanage.controller;
+package com.example.SmartApparel.Operations.controller;
 
-import com.example.SmartApparel.hrmanage.dto.EmployeeDTO;
-import com.example.SmartApparel.hrmanage.dto.ResponseDTO;
-import com.example.SmartApparel.hrmanage.service.EmployeeService;
-import com.example.SmartApparel.hrmanage.util.VarList;
+import com.example.SmartApparel.Operations.dto.EmployeeDTO;
+import com.example.SmartApparel.Operations.dto.ResponseDTO;
+import com.example.SmartApparel.Operations.service.EmployeeService;
+import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

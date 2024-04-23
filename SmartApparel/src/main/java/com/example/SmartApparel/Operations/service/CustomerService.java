@@ -27,11 +27,11 @@ public class CustomerService {
     public String saveCustomer(CustomerDTO customerDTO){
         // Check if a customer with the given ID already exists
         if (customerRepo.existsById(customerDTO.getCustomerId())){
-            return VarList.RSP_Duplicate;
+            return VarList.RSP_DUPLICATED;
         }else {
             // Save the customer to the database
             customerRepo.save(modelMapper.map(customerDTO, Customer.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }
     }
 
@@ -41,9 +41,9 @@ public class CustomerService {
         if (customerRepo.existsById(customerDTO.getCustomerId())){
             // Update the customer in the database
             customerRepo.save(modelMapper.map(customerDTO,Customer.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 
@@ -74,9 +74,9 @@ public class CustomerService {
         if (customerRepo.existsById(CustomerId)){
             // Delete the customer from the database
             customerRepo.deleteById(CustomerId);
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 }

@@ -1,21 +1,16 @@
-package com.example.SmartApparel.hrmanage.entity;
+package com.example.SmartApparel.Operations.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class Employee{
+public class EmployeeDTO {
     // Employee ID
-    @Id
     private String empId;
 
     // Employee name
@@ -37,26 +32,20 @@ public class Employee{
     private String password;
 
     // Employee phone number
-    @Column(name = "phone_number")
     private String phoneNumber;
 
     // Employee date of birth
-    @Column(name="dob")
     private Date dateOfBirth;
 
     // Bank account number
-    @Column(name = "account_number")
     private String accountNumber;
 
     // Bank account holder name
-    @Column(name = "holder_name")
     private String holderName;
 
     // Bank branch name
-    @Column(name = "branch_name")
     private String branchName;
 
     // Bank name
-    @Column(name = "bank_name")
     private String bankName;
 }

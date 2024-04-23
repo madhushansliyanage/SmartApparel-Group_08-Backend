@@ -1,9 +1,9 @@
-package com.example.SmartApparel.hrmanage.service;
+package com.example.SmartApparel.Operations.service;
 
-import com.example.SmartApparel.hrmanage.dto.EmployeeDTO;
-import com.example.SmartApparel.hrmanage.entity.Employee;
-import com.example.SmartApparel.hrmanage.repository.EmployeeRepo;
-import com.example.SmartApparel.hrmanage.util.VarList;
+import com.example.SmartApparel.Operations.dto.EmployeeDTO;
+import com.example.SmartApparel.Operations.entity.Employee;
+import com.example.SmartApparel.Operations.repo.EmployeeRepo;
+import com.example.SmartApparel.Operations.util.VarList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
