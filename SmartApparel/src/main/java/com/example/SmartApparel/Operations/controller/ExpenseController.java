@@ -139,6 +139,26 @@ public class ExpenseController {
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    // To get Total sum of Expenses
+    @GetMapping("/totalSumofExpense")
+    public ResponseEntity<ResponseDTO> getTotalExpenseSum() {
+
+        try {
+            double totalSum = expenseService.getTotalExpenseSum();
+
+            responseDTO.setCode(VarList.RSP_Success);
+            responseDTO.setMessage("Total expense sum retrieved successfully.");
+            responseDTO.setContent(totalSum);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setMessage("Failed to retrieve total expense sum: " + e.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 
 
