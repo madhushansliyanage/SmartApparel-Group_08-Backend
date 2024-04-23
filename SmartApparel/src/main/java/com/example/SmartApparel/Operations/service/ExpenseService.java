@@ -65,4 +65,9 @@ public class ExpenseService {
         }
     }
 
+    // To get sum of the Sales
+    public double getTotalExpenseSum() {
+        return expenseRepo.getTotalExpenseSum();
+    }
+
 }
