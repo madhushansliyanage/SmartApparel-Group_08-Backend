@@ -119,6 +119,7 @@ public class ExpenseController {
 
     @DeleteMapping (value = "/deleteExpense/{ExpenseId}")
     public ResponseEntity deleteExpense(@PathVariable int ExpenseId){
+        System.out.println(ExpenseId);
         try {
             String reponse = expenseService.deleteExpense(ExpenseId);
             if (reponse.equals("00")){
@@ -148,17 +149,19 @@ public class ExpenseController {
         try {
             double totalSum = expenseService.getTotalExpenseSum();
 
-            responseDTO.setCode(VarList.RSP_Success);
+            responseDTO.setCode(VarList.RSP_SUCCESS);
             responseDTO.setMessage("Total expense sum retrieved successfully.");
             responseDTO.setContent(totalSum);
             return new ResponseEntity<>(responseDTO, HttpStatus.OK);
         } catch (Exception e) {
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage("Failed to retrieve total expense sum: " + e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
 
 
