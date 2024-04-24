@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
     @Query(value = "SELECT SUM(amount) FROM expense", nativeQuery = true)
     double getTotalExpenseSum();
-    
+
 }
 
