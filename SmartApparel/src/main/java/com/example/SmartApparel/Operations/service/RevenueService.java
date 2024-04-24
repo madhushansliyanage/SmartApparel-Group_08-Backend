@@ -45,7 +45,7 @@ public class RevenueService {
 
     public List<RevenueDTO> viewRevenue(){
         List<Revenue> revenueList = revenueRepo.findAll();
-        return modelMapper.map(revenueList, new TypeToken<ArrayList<ExpenseDTO>>(){}.getType());
+        return modelMapper.map(revenueList, new TypeToken<ArrayList<RevenueDTO>>(){}.getType());
     }
 
     public RevenueDTO searchRevenue(int RevenueId){ //need to search using customer name
