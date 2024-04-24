@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RevenueRepo extends JpaRepository<Revenue,Integer> {
     @Query(value = "SELECT SUM(amount) FROM revenue", nativeQuery = true)
-    double getTotalExpenseSum();
+    double getTotalRevenueSum();
 
 }
