@@ -28,23 +28,23 @@ public class OrderController {
             String response = orderService.saveOrder(orderDTO);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(orderDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("06")) {
-                responseDTO.setCode(VarList.RSP_Duplicate);
+                responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Already Registered.");
                 responseDTO.setContent(orderDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,23 +58,23 @@ public class OrderController {
             String response = orderService.updateOrder(orderDTO);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(orderDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("01")) {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("Not a Registered Employee");
                 responseDTO.setContent(orderDTO);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }else {
-                responseDTO.setCode(VarList.RSP_Fail);
+                responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,12 +87,12 @@ public class OrderController {
         try {
             // Retrieve list of orders
             List<OrderDTO> orderDTOList = orderService.viewOrder();
-            responseDTO.setCode(VarList.RSP_Success);
+            responseDTO.setCode(VarList.RSP_SUCCESS);
             responseDTO.setMessage("Saved Successfully.");
             responseDTO.setContent(orderDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -100,24 +100,24 @@ public class OrderController {
     }
 
     // Delete a order
-    @DeleteMapping (value = "/deleteOrder")
-    public ResponseEntity deleteOrder(){
+    @DeleteMapping (value = "/deleteOrder/{OrderId}")
+    public ResponseEntity deleteOrder(@PathVariable int OrderId){
         try {
-            String response = orderService.deleteOrder();
+            String response = orderService.deleteOrder(OrderId);
             // Handle different responses from the service
             if (response.equals("00")){
-                responseDTO.setCode(VarList.RSP_Success);
+                responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Successful.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
             }else {
-                responseDTO.setCode(VarList.RSP_No_Data_Found);
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("No order available.");
                 responseDTO.setContent(null);
                 return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            responseDTO.setCode(VarList.RSP_Error);
+            responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);

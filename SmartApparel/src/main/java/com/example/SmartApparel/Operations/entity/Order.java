@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 // Annotation to specify the table name in the database
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

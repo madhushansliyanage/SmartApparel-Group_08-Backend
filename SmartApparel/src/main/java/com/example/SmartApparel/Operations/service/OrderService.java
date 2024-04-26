@@ -27,11 +27,11 @@ public class OrderService {
     public String saveOrder(OrderDTO orderDTO){
         // Check if a order with the given ID already exists
         if (orderRepo.existsById(orderDTO.getOrderId())){
-            return VarList.RSP_Duplicate;
+            return VarList.RSP_DUPLICATED;
         }else {
             // Save the order to the database
             orderRepo.save(modelMapper.map(orderDTO, Order.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }
     }
 
@@ -41,9 +41,9 @@ public class OrderService {
         if (orderRepo.existsById(orderDTO.getOrderId())){
             // Update the order in the database
             orderRepo.save(modelMapper.map(orderDTO,Order.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 
@@ -52,18 +52,18 @@ public class OrderService {
         // Retrieve all orders from the database
         List<Order> orderList = orderRepo.findAll();
         // Map the list of entities to a list of DTOs
-        return modelMapper.map(customerList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
+        return modelMapper.map(orderList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
     }
 
     // Method to delete a order
-    public String deleteOrder(){
+    public String deleteOrder(int OrderId){
         // Check if a order with the given ID exists
-        if (customerRepo.existsById(CustomerId)){
+        if (orderRepo.existsById(OrderId)){
             // Delete the customer from the database
-            customerRepo.deleteById(CustomerId);
-            return VarList.RSP_Success;
+            orderRepo.deleteById(OrderId);
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 }

@@ -26,19 +26,19 @@ public class ExpenseService {
 
     public String saveExpense(ExpenseDTO expenseDTO){
         if (expenseRepo.existsById(expenseDTO.getExpense_ID())){
-            return VarList.RSP_Duplicate;
+            return VarList.RSP_DUPLICATED;
         }else {
             expenseRepo.save(modelMapper.map(expenseDTO, Expense.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }
     }
 
     public String updateExpense(ExpenseDTO expenseDTO){
         if (expenseRepo.existsById(expenseDTO.getExpense_ID())){
             expenseRepo.save(modelMapper.map(expenseDTO,Expense.class));
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
 
@@ -59,10 +59,16 @@ public class ExpenseService {
     public String deleteExpense(int ExpenseId){
         if (expenseRepo.existsById(ExpenseId)){
             expenseRepo.deleteById(ExpenseId);
-            return VarList.RSP_Success;
+            return VarList.RSP_SUCCESS;
         }else{
-            return VarList.RSP_No_Data_Found;
+            return VarList.RSP_NO_DATA_FOUND;
         }
     }
+
+    // To get sum of the Sales
+    public double getTotalExpenseSum() {
+        return expenseRepo.getTotalExpenseSum();
+    }
+
 
 }
