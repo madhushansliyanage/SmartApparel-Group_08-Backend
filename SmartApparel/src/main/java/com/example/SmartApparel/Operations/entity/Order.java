@@ -20,8 +20,11 @@ public class Order {
     private String OrderAddress;
     private String OrderEmail;
     private String OrderPhoneNum;
-
     private int Quantity;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus Status;
+
 
     public int getOrderId(){
         return OrderId;
@@ -58,11 +61,17 @@ public class Order {
         this.OrderPhoneNum = OrderPhoneNum;
     }
 
-
     public int getQuantity(){
         return Quantity;
     }
     public void setQuantity(int Quantity){
         this.Quantity = Quantity;
+    }
+
+    public OrderStatus getStatus(){
+        return Status;
+    }
+    public void setStatus(int Status){
+        this.Status = Status;
     }
 }

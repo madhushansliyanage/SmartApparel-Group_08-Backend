@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class OrderDTO {
-
     // Properties of the OrderDTO class
     private int OrderId;
     private String OrderCustomerName;
@@ -17,3 +16,13 @@ public class OrderDTO {
     private String OrderEmail;
     private String OrderPhoneNum;
 }
+
+//Status of an order throughout its lifecycle
+public enum OrderStatus {
+    CREATED,    //Order created.
+    PROCESSING, //Order is currently being processed.
+    QUALITY_CERTIFIED,  //Order quality certification completed.
+    SHIPPED,    //Order shipped to the customer.
+    DELIVERED   //Order  delivered to the customer.
+}
+

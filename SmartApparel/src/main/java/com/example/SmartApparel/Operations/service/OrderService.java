@@ -66,4 +66,64 @@ public class OrderService {
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
+
+    public OrderDTO checkInventoryAndAllocateMaterials(Long orderId) {
+        Order order = orderRepo.findById(orderId).orElse(null);
+        if (order != null) {
+            // Perform inventory check logic
+            boolean inventoryCheckPassed = performInventoryCheck(order);
+            if (inventoryCheckPassed) {
+                // Allocate materials and update order status
+                order.setStatus(OrderStatus.MATERIAL_ALLOCATED);
+                orderRepo.save(order);
+                return modelMapper.map(order, OrderDTO.class);
+            } else {
+                // Handle insufficient inventory scenario
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Insufficient amount of materials.");
+                responseDTO.setContent(null);
+                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+            }
+        }
+        return null; // Return null if the order is not found
+    }
+
+    private boolean performInventoryCheck(Order order) {
+        boolean sufficientMaterials = checkSufficientMaterials(order);
+
+        if (sufficientMaterials) {
+            // Allocate materials and update order status
+            allocateMaterialsAndUpdateStatus(order);
+        } else {
+            // Handle case when there are insufficient materials
+            responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+            responseDTO.setMessage("Insufficient amount of materials.");
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+        }
+        return true;
+    }
+
+
+
+
+
+    //Order Status
+//    public Order OrderStatus(Long orderId, OrderStatus newStatus) {
+//        // Retrieve the order from the repository by its ID
+//        Order order = orderRepository.findById(orderId).orElse(null);
+//
+//        // If the order is found, update its status and save the changes
+//        if (order != null) {
+//            order.setStatus(newStatus);
+//            return orderRepository.save(order);
+//        }
+//        return null;    // Return null if the order is not found
+//    }
+
+
+
+
+
+
 }
