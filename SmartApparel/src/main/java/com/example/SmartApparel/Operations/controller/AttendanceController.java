@@ -55,11 +55,12 @@ public class AttendanceController {
     }
 
     // Endpoint to search attendance by attendance id
-    @GetMapping("/search/{attendanceId}")
-    public ResponseEntity searchAttendance(@PathVariable int attendanceId){
+
+    @GetMapping("/searchbyid/{attendanceId}")
+    public ResponseEntity searchAttendanceById(@PathVariable int attendanceId){
         try{
             // Search for attendance records for the given attendance id
-            AttendanceDTO attendanceDTO = attendanceService.searchAttendanceByID(attendanceId);
+            AttendanceDTO attendanceDTO= attendanceService.searchAttendanceByID(attendanceId);
 
             // Check if no records found
             if(attendanceDTO==null){
@@ -85,8 +86,8 @@ public class AttendanceController {
     }
 
     // Endpoint to search attendance by date
-    @GetMapping("/search/{date}")
-    public ResponseEntity searchAttendance(@PathVariable Date date){
+    @GetMapping("/searchbydate/{date}")
+    public ResponseEntity searchAttendanceByDate(@PathVariable Date date){
         try{
             // Search for attendance records for the given date
             List<AttendanceDTO> attendanceDTOList = attendanceService.searchAttendanceByDate(date);
