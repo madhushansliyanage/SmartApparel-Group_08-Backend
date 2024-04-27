@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/attendance")
+@CrossOrigin
 public class AttendanceController {
 
     @Autowired
@@ -40,6 +41,36 @@ public class AttendanceController {
             }
             // Set response content and return
             responseDTO.setContent(attendanceDTOList);
+            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+
+        }catch (Exception ex){
+            System.out.println("ERROR: "+ex.getMessage());
+
+            // Handle errors
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage(ex.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Endpoint to search attendance by attendance id
+    @GetMapping("/search/{attendanceId}")
+    public ResponseEntity searchAttendance(@PathVariable int attendanceId){
+        try{
+            // Search for attendance records for the given attendance id
+            AttendanceDTO attendanceDTO = attendanceService.searchAttendanceByID(attendanceId);
+
+            // Check if no records found
+            if(attendanceDTO==null){
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("No records of the attendance id");
+            }else{
+                responseDTO.setCode(VarList.RSP_SUCCESS);
+                responseDTO.setMessage("Successfully fetched the attendance details");
+            }
+            // Set response content and return
+            responseDTO.setContent(attendanceDTO);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
