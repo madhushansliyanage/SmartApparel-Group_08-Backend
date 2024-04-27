@@ -123,4 +123,18 @@ public class OrderController {
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping(value = "/updateOrderStatus/{orderId}")
+    public ResponseEntity updateOrderStatus(@PathVariable int orderId) {
+        try {
+            Order updatedOrder = orderService.updateOrderStatus(orderId);
+            if (updatedOrder != null) {
+                return ResponseEntity.ok().body("Order status updated successfully.");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order status: " + e.getMessage());
+        }
+    }
 }

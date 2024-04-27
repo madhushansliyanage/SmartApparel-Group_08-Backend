@@ -104,26 +104,53 @@ public class OrderService {
         return true;
     }
 
+    //Method for Order Status
+    public Order UpdateOrderStatus(Long orderId) {
+        // Retrieve the order from the repository by its ID
+        Order order = orderRepo.findById(orderId).orElse(null);
 
+        // If the order is found, update its status
+        if (order != null) {
+            switch (order.getStatus()) {
+                case CREATED:
+                    order.setStatus(UpdateOrderStatus.CREATED);   // Update order status to CREATED
+                    //performQualityCertification(order);    // Perform quality certification tasks
+                    return orderRepo.save(order);    // Save the changes
+                    break;
+                case PROCESSING:
+                    order.setStatus(UpdateOrderStatus.PROCESSING);    // Update order status to PROCESSING
+                    //performQualityCertification(order); // Perform quality certification tasks
+                    return orderRepo.save(order);   // Save the changes
+                    break;
+                case QUALITY_CERTIFIED:
+                    order.setStatus(UpdateOrderStatus.QUALITY_CERTIFIED); // Update order status to QUALITY_CERTIFIED
+                    //performQualityCertification(order); // Perform quality certification tasks
+                    return orderRepo.save(order); // Save the changes
+                    break;
+                case SHIPPED:
+                    order.setStatus(UpdateOrderStatus.SHIPPED); // Update order status to SHIPPED
+                    //performQualityCertification(order); // Perform quality certification tasks
+                    return orderRepo.save(order); // Save the changes
+                    break;
+                case DELIVERED:
+                    order.setStatus(UpdateOrderStatus.DELIVERED); // Update order status to DELIVERED
+                    //performQualityCertification(order); // Perform quality certification tasks
+                    return orderRepo.save(order); // Save the changes
+                    break;
+                default:
+                    responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                    responseDTO.setMessage("Data not found");
+                    responseDTO.setContent(null);
+                    return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+                    break;
+            }
+        }
+        return null;
+    }
 
-
-
-    //Order Status
-//    public Order OrderStatus(Long orderId, OrderStatus newStatus) {
-//        // Retrieve the order from the repository by its ID
-//        Order order = orderRepository.findById(orderId).orElse(null);
-//
-//        // If the order is found, update its status and save the changes
-//        if (order != null) {
-//            order.setStatus(newStatus);
-//            return orderRepository.save(order);
-//        }
-//        return null;    // Return null if the order is not found
+    // Method to perform quality certification tasks
+//    private void performQualityCertification(Order order) {
+//        // Implement quality certification tasks
 //    }
-
-
-
-
-
 
 }
