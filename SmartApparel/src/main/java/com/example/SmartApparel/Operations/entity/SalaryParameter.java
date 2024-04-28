@@ -40,19 +40,19 @@ public class SalaryParameter {
 
     /**
      * Employee Provident Fund (EPF) contribution.
-     * This field stores the amount contributed by the employee towards EPF.
+     * This field stores the percentage contributed by the employee towards EPF.
      */
     private float epfByEmployee;
 
     /**
      * Employee Provident Fund (EPF) contribution.
-     * This field stores the amount contributed by the company towards EPF.
+     * This field stores the percentage contributed by the company towards EPF.
      */
     private float epfByCompany;
 
     /**
      * Employee Trust Fund (ETF) contribution.
-     * This field stores the amount contributed towards ETF.
+     * This field stores the percentage contributed towards ETF.
      */
     private float etf;
 }
