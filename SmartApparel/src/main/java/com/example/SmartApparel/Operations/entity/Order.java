@@ -19,5 +19,6 @@ public class Order {
     private String OrderCustomerName;
     private String OrderAddress;
     private String OrderEmail;
+    private String OrderStatus;
     private String OrderPhoneNum;
 }

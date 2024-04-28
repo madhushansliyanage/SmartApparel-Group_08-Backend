@@ -66,4 +66,12 @@ public class OrderService {
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
+
+    public List<Integer> getCompletedOrderIds() {
+
+        // Retrieve all orders from the database
+        List<Integer> orderIdList = orderRepo.getCompletedOrders();
+        // Map the list of entities to a list of DTOs
+        return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
+    }
 }

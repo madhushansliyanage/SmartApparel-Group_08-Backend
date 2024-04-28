@@ -2,6 +2,7 @@ package com.example.SmartApparel.Operations.controller;
 
 import com.example.SmartApparel.Operations.dto.OrderDTO;
 import com.example.SmartApparel.Operations.dto.ResponseDTO;
+import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.service.OrderService;
 import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/order")
+@CrossOrigin
 public class OrderController {
 
     // Autowired ResponseDTO and OrderService
@@ -121,6 +123,26 @@ public class OrderController {
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // To get Total sum of Expenses
+    @GetMapping("/completedOrderId")
+    public ResponseEntity<ResponseDTO> getCompletedOrderIds() {
+
+        try {
+            List<Integer> orderCompleted = orderService.getCompletedOrderIds();
+
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMessage("Total completed order list successfully.");
+            responseDTO.setContent(orderCompleted);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage("Failed to retrieve completed order list : " + e.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
