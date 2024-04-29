@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.sql.Update;
 
 @Entity
 @AllArgsConstructor
@@ -17,61 +18,73 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
-    private String OrderAddress;
-    private String OrderEmail;
-    private String OrderPhoneNum;
+    private String OrderAgreedPrice;
+    private int OrderSize;
+    private int OrderAmount;
     private int Quantity;
 
+    private int status;
+
     @Enumerated(EnumType.STRING)
-    private OrderStatus Status;
+    //private UpdateOrderStatus Status;
 
+    public Order save(Order order) {
+        return null;
+    }
 
-    public int getOrderId(){
+    public int getOrderId() {
         return OrderId;
     }
-    public void setOrderId(int OrderId){
+
+    public void setOrderId(int OrderId) {
         this.OrderId = OrderId;
     }
 
-    public int getOrderCustomerName(){
+    public String getOrderCustomerName() {
         return OrderCustomerName;
     }
-    public void setOrderCustomerName(int OrderCustomerName){
+
+    public void setOrderCustomerName(String OrderCustomerName) {
         this.OrderCustomerName = OrderCustomerName;
     }
 
-    public int getOrderAddress(){
-        return OrderAddress;
-    }
-    public void setOrderAddress(int OrderAddress){
-        this.OrderAddress = OrderAddress;
+    public String getOrderAgreedPrice() {
+        return OrderAgreedPrice;
     }
 
-    public int getOrderEmail(){
-        return OrderEmail;
-    }
-    public void setOrderEmail(int OrderEmail){
-        this.OrderEmail = OrderEmail;
+    public void setOrderAgreedPrice(String OrderAgreedPrice) {
+        this.OrderAgreedPrice = OrderAgreedPrice;
     }
 
-    public int getOrderPhoneNum(){
-        return OrderPhoneNum;
-    }
-    public void setOrderPhoneNum(int OrderPhoneNum){
-        this.OrderPhoneNum = OrderPhoneNum;
+    public int getOrderSize() {
+        return OrderSize;
     }
 
-    public int getQuantity(){
+    public void setOrderSize(int OrderSize) {
+        this.OrderSize = OrderSize;
+    }
+
+    public int getOrderAmount() {
+        return OrderAmount;
+    }
+
+    public void setOrderAmount(int OrderAmount) {
+        this.OrderAmount = OrderAmount;
+    }
+
+    public int getQuantity() {
         return Quantity;
     }
-    public void setQuantity(int Quantity){
+
+    public void setQuantity(int Quantity) {
         this.Quantity = Quantity;
     }
 
-    public OrderStatus getStatus(){
-        return Status;
+    public int getStatus() {
+        return status;
     }
-    public void setStatus(int Status){
-        this.Status = Status;
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

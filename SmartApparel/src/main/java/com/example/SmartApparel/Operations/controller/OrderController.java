@@ -2,6 +2,7 @@ package com.example.SmartApparel.Operations.controller;
 
 import com.example.SmartApparel.Operations.dto.OrderDTO;
 import com.example.SmartApparel.Operations.dto.ResponseDTO;
+import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.service.OrderService;
 import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/order")
+@CrossOrigin
 public class OrderController {
 
     // Autowired ResponseDTO and OrderService
@@ -127,7 +129,7 @@ public class OrderController {
     @PutMapping(value = "/updateOrderStatus/{orderId}")
     public ResponseEntity updateOrderStatus(@PathVariable int orderId) {
         try {
-            Order updatedOrder = orderService.updateOrderStatus(orderId);
+            Order updatedOrder = orderService.UpdateOrderStatus(orderId);
             if (updatedOrder != null) {
                 return ResponseEntity.ok().body("Order status updated successfully.");
             } else {

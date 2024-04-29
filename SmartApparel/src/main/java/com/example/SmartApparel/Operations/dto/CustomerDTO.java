@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class CustomerDTO {
-
     // Properties of the CustomerDTO class
     private int CustomerId;
     private String CustomerName;
     private String CustomerAddress;
     private String CustomerEmail;
+    private String CustomerCompanyName;
+    private String CustomerReference;
     private String CustomerPhoneNum;
+    private String CustomerPassword;
 }

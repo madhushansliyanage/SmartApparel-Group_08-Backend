@@ -12,17 +12,17 @@ public class OrderDTO {
     // Properties of the OrderDTO class
     private int OrderId;
     private String OrderCustomerName;
-    private String OrderAddress;
-    private String OrderEmail;
-    private String OrderPhoneNum;
+    private String OrderAgreedPrice;
+    private int OrderSize;
+    private int OrderAmount;
 }
 
 //Status of an order throughout its lifecycle
-public enum OrderStatus {
+enum UpdateOrderStatus {
+    PENDING,    //Order pending.
     CREATED,    //Order created.
     PROCESSING, //Order is currently being processed.
     QUALITY_CERTIFIED,  //Order quality certification completed.
     SHIPPED,    //Order shipped to the customer.
     DELIVERED   //Order  delivered to the customer.
 }
-

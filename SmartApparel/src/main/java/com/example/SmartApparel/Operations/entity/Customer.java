@@ -19,5 +19,8 @@ public class Customer {
     private String CustomerName;
     private String CustomerAddress;
     private String CustomerEmail;
+    private String CustomerCompanyName;
+    private String CustomerReference;
     private String CustomerPhoneNum;
+    private String CustomerPassword;
 }
