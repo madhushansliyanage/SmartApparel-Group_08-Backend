@@ -13,7 +13,7 @@ public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
     double getTotalExpenseSum();
 
 
-    //Query for get expenses details among date range .....................................................................................
+    //Query for get expense details among date range .....................................................................................
     @Query(value = "SELECT * FROM expense WHERE expense_date BETWEEN 'start_date' AND 'end_date' ", nativeQuery = true)
     double getExpenseByDateRange();
 
