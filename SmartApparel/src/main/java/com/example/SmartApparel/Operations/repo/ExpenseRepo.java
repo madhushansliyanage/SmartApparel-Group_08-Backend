@@ -7,8 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
+
+    //Query for get Total amount of expenses..............................................................................................
     @Query(value = "SELECT SUM(amount) FROM expense", nativeQuery = true)
     double getTotalExpenseSum();
+
+
+    //Query for get expenses details among date range .....................................................................................
+    @Query(value = "SELECT * FROM expense WHERE expense_date BETWEEN 'start_date' AND 'end_date' ", nativeQuery = true)
+    double getExpenseByDateRange();
 
 }
 
