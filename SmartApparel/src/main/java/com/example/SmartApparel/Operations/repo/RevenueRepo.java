@@ -14,10 +14,10 @@ public interface RevenueRepo extends JpaRepository<Revenue,Integer> {
 
     //Query for get revenue details among date range .....................................................................................
     @Query(value = "SELECT * FROM revenue WHERE date BETWEEN 'start_date' AND 'end_date' ", nativeQuery = true)
-    double getExpenseByDateRange(String start_date,String end_date);
+    double getRevenueByDateRange(String start_date,String end_date);
 
     //Query for get revenue details among date range orderd by date .....................................................................................
     @Query(value = "SELECT * FROM revenue WHERE date BETWEEN 'start_date' AND 'end_date' order(date)", nativeQuery = true)
-    double getExpenseByDateRangeOrderd(String start_date,String end_date);
+    double getRevenueByDateRangeOrderd(String start_date,String end_date);
 
 }
