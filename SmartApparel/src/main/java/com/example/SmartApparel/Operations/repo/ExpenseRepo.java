@@ -18,5 +18,9 @@ public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
     @Query(value = "SELECT * FROM expense WHERE date BETWEEN 'start_date' AND 'end_date' ", nativeQuery = true)
     double getExpenseByDateRange(String start_date,String end_date);
 
+    //Query for get expense details among date range orderd by date .....................................................................................
+    @Query(value = "SELECT * FROM expense WHERE date BETWEEN 'start_date' AND 'end_date' order(date)", nativeQuery = true)
+    double getExpenseByDateRangeOrderd(String start_date,String end_date);
+
 }
 
