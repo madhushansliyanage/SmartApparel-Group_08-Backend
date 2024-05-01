@@ -84,7 +84,7 @@ public class SalaryController {
 
             if(response.equals(VarList.RSP_SUCCESS)){
                 responseDTO.setCode(VarList.RSP_SUCCESS);
-                responseDTO.setMessage("Successfully added Salary");
+                responseDTO.setMessage("Successfully Calculated Salary");
                 responseDTO.setContent("empId: "+empId+"  yearNMonth: "+yearMonth);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
@@ -92,6 +92,35 @@ public class SalaryController {
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Salary is already exist for "+empId+" for "+yearMonth);
                 responseDTO.setContent("empId: "+empId+"  yearNMonth: "+yearMonth);
+                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception ex){
+            System.out.println("ERROR: "+ex.getMessage());
+
+            // Handle exceptions
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage(ex.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/calculate-all/{yearMonth}")
+    public ResponseEntity calculateSalaryForAll(@PathVariable String yearMonth){
+
+        try{
+            String response = salaryService.calculateSalaryFroAll(yearMonth);
+
+            if(response.equals(VarList.RSP_SUCCESS)){
+                responseDTO.setCode(VarList.RSP_SUCCESS);
+                responseDTO.setMessage("Successfully Calculated Salary");
+                responseDTO.setContent("yearNMonth: "+yearMonth);
+                return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
+            }
+            else{
+                responseDTO.setCode(VarList.RSP_DUPLICATED);
+                responseDTO.setMessage("Salaries for all employees exist for this: "+yearMonth+" year");
+                responseDTO.setContent("yearNMonth: "+yearMonth);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
         }catch (Exception ex){
@@ -164,7 +193,7 @@ public class SalaryController {
     }
 
     @DeleteMapping("/delete/{salaryId}")
-    public ResponseEntity deleteEmployeeByID(@PathVariable int salaryId){
+    public ResponseEntity deleteSalaryByID(@PathVariable int salaryId){
 
         try{
             System.out.println("inside delete controller method");

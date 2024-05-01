@@ -51,7 +51,7 @@ public class SalaryService {
 
     public String addNewSalary(SalaryDTO salaryDTO){
 
-        if(salaryRepo.getSalaryCount(salaryDTO.getEmpId(),salaryDTO.getYearNMonth())>=1){
+        if(salaryRepo.getCalculatedSalaryCount(salaryDTO.getEmpId(),salaryDTO.getYearNMonth())>=1){
 
             return VarList.RSP_DUPLICATED;
         }else{
@@ -121,5 +121,26 @@ public class SalaryService {
         salaryDTO.setNetSalary((float) (Math.ceil(netSalary * 100) / 100));
 
         return addNewSalary(salaryDTO);
+    }
+
+    public String  calculateSalaryFroAll(String yearMonth){
+
+        List<String> stringList = employeeRepo.getAllEmployeeId();
+        int successCount=0;
+
+        System.out.println("########################");
+        stringList.forEach(id -> System.out.println(id));
+        System.out.println("########################");
+
+        for(String id : stringList){
+            if(VarList.RSP_SUCCESS == calculateSalary(id,yearMonth)){
+                successCount++;
+            }
+        }
+        if (successCount>0){
+            return VarList.RSP_SUCCESS;
+        }
+
+        return VarList.RSP_DUPLICATED;
     }
 }
