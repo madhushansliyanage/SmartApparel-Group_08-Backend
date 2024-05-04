@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/customer")
+@RequestMapping("/customer")
 @CrossOrigin
 public class CustomerController {
 
@@ -100,6 +100,22 @@ public class CustomerController {
         }
     }
 
+    @GetMapping (value = "/get")
+    public ResponseEntity getCus(){
+        try {
+            // Retrieve list of customers
+
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMessage("Saved Successfully.");
+
+            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage(e.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     // Search for a customer by ID
 //    @GetMapping (value = "/searchCustomer/{CustomerId}")
 //    public ResponseEntity searchCustomer(@PathVariable int CustomerId){

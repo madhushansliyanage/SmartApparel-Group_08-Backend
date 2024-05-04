@@ -16,6 +16,6 @@ public class CustomerDTO {
     private String CustomerEmail;
     private String CustomerCompanyName;
     private String CustomerReference;
-    private String CustomerPhoneNum;
+    private int CustomerPhoneNum;
     private String CustomerPassword;
 }

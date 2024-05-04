@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 // Annotation to specify the table name in the database
-@Table(name = "Customer")
+@Table(name = "Customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,6 @@ public class Customer {
     private String CustomerEmail;
     private String CustomerCompanyName;
     private String CustomerReference;
-    private String CustomerPhoneNum;
+    private int CustomerPhoneNum;
     private String CustomerPassword;
 }

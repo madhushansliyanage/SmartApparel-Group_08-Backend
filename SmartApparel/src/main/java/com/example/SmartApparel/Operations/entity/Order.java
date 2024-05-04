@@ -18,9 +18,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
-    private String OrderAgreedPrice;
-    private int OrderSize;
-    private int OrderAmount;
+    private int OrderAgreedPrice;
+    private int SmallSize;
+    private int MediumSize;
+    private int LargeSize;
+    private String ClothMaterial;
+    
     private int Quantity;
 
     private int status;
@@ -48,19 +51,19 @@ public class Order {
         this.OrderCustomerName = OrderCustomerName;
     }
 
-    public String getOrderAgreedPrice() {
+    public double getOrderAgreedPrice() {
         return OrderAgreedPrice;
     }
 
-    public void setOrderAgreedPrice(String OrderAgreedPrice) {
+    public void setOrderAgreedPrice(double OrderAgreedPrice) {
         this.OrderAgreedPrice = OrderAgreedPrice;
     }
 
-    public int getOrderSize() {
+    public String getOrderSize() {
         return OrderSize;
     }
 
-    public void setOrderSize(int OrderSize) {
+    public void setOrderSize(String OrderSize) {
         this.OrderSize = OrderSize;
     }
 

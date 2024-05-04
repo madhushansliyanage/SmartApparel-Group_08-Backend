@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/order")
+@RequestMapping("api/v1/orders")
 @CrossOrigin
 public class OrderController {
 
@@ -126,17 +126,17 @@ public class OrderController {
         }
     }
 
-    @PutMapping(value = "/updateOrderStatus/{orderId}")
-    public ResponseEntity updateOrderStatus(@PathVariable int orderId) {
-        try {
-            Order updatedOrder = orderService.UpdateOrderStatus(orderId);
-            if (updatedOrder != null) {
-                return ResponseEntity.ok().body("Order status updated successfully.");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order status: " + e.getMessage());
-        }
-    }
+//    @PutMapping(value = "/updateOrderStatus/{orderId}")
+//    public ResponseEntity updateOrderStatus(@PathVariable int orderId) {
+//        try {
+//            Order updatedOrder = orderService.UpdateOrderStatus(orderId);
+//            if (updatedOrder != null) {
+//                return ResponseEntity.ok().body("Order status updated successfully.");
+//            } else {
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order status: " + e.getMessage());
+//        }
+//    }
 }
