@@ -23,7 +23,7 @@ public class Order {
     private int MediumSize;
     private int LargeSize;
     private String ClothMaterial;
-    
+
     private int Quantity;
 
     private int status;
