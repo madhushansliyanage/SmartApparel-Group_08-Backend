@@ -5,21 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "Revenue")
+@Table(name = "Inventory")
 
-public class Revenue {
-
+public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Revenue_ID;
-    private String Date;
-    private String Description;
-    private String Cheque_Id;
-    private String Order_Id;
-    private String Status;
-    private Double Amount;
+    private int itemID;
+    private String itemCategory;
+    private String itemName;
+    private float stockQty;
+    private String unit;
+    private float purchasePrice;
+    private LocalDate purchaseDate;
 }

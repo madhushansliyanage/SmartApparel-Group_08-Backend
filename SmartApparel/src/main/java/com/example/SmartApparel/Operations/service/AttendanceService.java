@@ -1,7 +1,9 @@
 package com.example.SmartApparel.Operations.service;
 
 import com.example.SmartApparel.Operations.dto.AttendanceDTO;
+import com.example.SmartApparel.Operations.dto.EmployeeDTO;
 import com.example.SmartApparel.Operations.entity.Attendance;
+import com.example.SmartApparel.Operations.entity.Employee;
 import com.example.SmartApparel.Operations.repo.AttendanceRepo;
 import com.example.SmartApparel.Operations.util.VarList;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,19 @@ public class AttendanceService {
         List<Attendance> attendanceList= attendanceRepo.findAll(); // Retrieve all attendance records from the database
         // Map the list of Attendance entities to a list of AttendanceDTOs
         return modelMapper.map(attendanceList,new TypeToken<List<AttendanceDTO>>(){}.getType());
+    }
+
+    // Method to search for attendance records by attendance id
+    public AttendanceDTO searchAttendanceByID(int attendanceId){
+        // Check if attendance record exists
+        if (attendanceRepo.existsById(attendanceId)){
+            // Retrieve employee from repository and map to DTO
+            Attendance attendance = attendanceRepo.findById(attendanceId).orElse(null);
+            return modelMapper.map(attendance, AttendanceDTO.class);
+        }else{
+            // Return null if attendance record not found
+            return null;
+        }
     }
 
     // Method to search for attendance records by date

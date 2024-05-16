@@ -12,6 +12,8 @@ public class RevenueDTO {
     private int Revenue_ID;
     private String Date;
     private String Description;
-    private String Category;
+    private String Cheque_Id;
+    private String Order_Id;
+    private String Status;
     private Double Amount;
 }

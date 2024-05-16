@@ -18,6 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
+
     private double OrderAgreedPrice;
     private int SmallSize;
     private int MediumSize;
@@ -97,3 +98,10 @@ public class Order {
         this.status = status;
     }
 }
+
+    private String OrderAddress;
+    private String OrderEmail;
+    private String OrderStatus;
+    private String OrderPhoneNum;
+}
+

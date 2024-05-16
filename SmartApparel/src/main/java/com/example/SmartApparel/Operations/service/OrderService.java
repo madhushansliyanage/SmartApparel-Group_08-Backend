@@ -71,6 +71,7 @@ public class OrderService {
         }
     }
 
+
 //    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
 //        order = orderRepo.findById(order.getOrderId()).orElse(null);
 //        if (order != null) {
@@ -158,5 +159,14 @@ public class OrderService {
 //    private void performQualityCertification(Order order) {
 //        // Implement quality certification tasks
 //    }
+
+
+    public List<Integer> getCompletedOrderIds() {
+
+        // Retrieve all orders from the database
+        List<Integer> orderIdList = orderRepo.getCompletedOrders();
+        // Map the list of entities to a list of DTOs
+        return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
+    }
 
 }

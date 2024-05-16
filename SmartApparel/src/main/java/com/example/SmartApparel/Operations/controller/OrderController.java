@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("api/v1/orders")
+
+@RequestMapping("api/v1/order")
+
 @CrossOrigin
 public class OrderController {
 
@@ -126,6 +130,7 @@ public class OrderController {
         }
     }
 
+
 //    @PutMapping(value = "/updateOrderStatus/{orderId}")
 //    public ResponseEntity updateOrderStatus(@PathVariable int orderId) {
 //        try {
@@ -139,4 +144,25 @@ public class OrderController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating order status: " + e.getMessage());
 //        }
 //    }
+
+
+    // To get Total sum of Expenses
+    @GetMapping("/completedOrderId")
+    public ResponseEntity<ResponseDTO> getCompletedOrderIds() {
+
+        try {
+            List<Integer> orderCompleted = orderService.getCompletedOrderIds();
+
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMessage("Total completed order list successfully.");
+            responseDTO.setContent(orderCompleted);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            responseDTO.setCode(VarList.RSP_ERROR);
+            responseDTO.setMessage("Failed to retrieve completed order list : " + e.getMessage());
+            responseDTO.setContent(null);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

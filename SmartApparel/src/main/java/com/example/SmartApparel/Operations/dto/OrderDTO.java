@@ -12,12 +12,19 @@ public class OrderDTO {
     // Properties of the OrderDTO class
     private int OrderId;
     private String OrderCustomerName;
+
     private double OrderAgreedPrice;
     private int SmallSize;
     private int MediumSize;
     private int LargeSize;
     private String ClothMaterial;
     private String status;
+
+    private String OrderAddress;
+    private String OrderEmail;
+    private String OrderStatus;
+    private String OrderPhoneNum;
+
 }
 
 //Status of an order throughout its lifecycle
