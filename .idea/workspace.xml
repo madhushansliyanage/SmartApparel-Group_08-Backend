@@ -10,16 +10,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2dwfB61PXXe3Bxbzexb4SUWg5cR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -33,23 +32,35 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.SmartApparelApplication.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Rashmika/Documents/UOR/Academics/Level 3/Semester 1/Group Project/Development/BackEnd/SmartApparel-Group_08-Backend/SmartApparel/src/main/java/com/example/SmartApparel/Operations/controller/CustomerController.java",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/HP/Documents/UOR/Academics/Level 3/Semester 1/Group Project/Development/BackEnd/SmartApparel-Group_08-Backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
     <configuration name="SmartApparelApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="SmartApparel" />
+      <module name="SmartApparel-Group_08-Backend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.SmartApparel.SmartApparelApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -71,6 +82,12 @@
       <workItem from="1712467474111" duration="200000" />
       <workItem from="1712907983312" duration="160000" />
       <workItem from="1712908203764" duration="116000" />
+      <workItem from="1714206299206" duration="16108000" />
+      <workItem from="1714278157586" duration="990000" />
+      <workItem from="1714291019353" duration="1157000" />
+      <workItem from="1715610751597" duration="706000" />
+      <workItem from="1715677815988" duration="5000" />
+      <workItem from="1715850149085" duration="738000" />
     </task>
     <servers />
   </component>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.sql.Update;
 
 @Entity
 @AllArgsConstructor
@@ -17,8 +18,90 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
+
+    private double OrderAgreedPrice;
+    private int SmallSize;
+    private int MediumSize;
+    private int LargeSize;
+    private String ClothMaterial;
+    private String status;
+
+    private int Quantity;
+
+
+    @Enumerated(EnumType.STRING)
+
+    public Order save(Order order) {
+        return null;
+    }
+
+    public int getOrderId() {
+        return OrderId;
+    }
+    public void setOrderId(int OrderId) {
+        this.OrderId = OrderId;
+    }
+
+    public String getOrderCustomerName() {
+        return OrderCustomerName;
+    }
+    public void setOrderCustomerName(String OrderCustomerName) {
+        this.OrderCustomerName = OrderCustomerName;
+    }
+
+    public double getOrderAgreedPrice() {
+        return OrderAgreedPrice;
+    }
+    public void setOrderAgreedPrice(double OrderAgreedPrice) {
+        this.OrderAgreedPrice = OrderAgreedPrice;
+    }
+
+    public int getSmallSize() {
+        return SmallSize;
+    }
+    public void setSmallSize(int SmallSize) {
+        this.SmallSize = SmallSize;
+    }
+
+    public int getMediumSize() {
+        return MediumSize;
+    }
+    public void setMediumSize(int MediumSize) {
+        this.MediumSize = MediumSize;
+    }
+
+    public int getLargeSize() {
+        return LargeSize;
+    }
+    public void setLargeSize(int LargeSize) {
+        this.LargeSize = LargeSize;
+    }
+
+    public String getClothMaterial() {
+        return ClothMaterial;
+    }
+    public void setClothMaterial(String ClothMaterial) {
+        this.ClothMaterial = ClothMaterial;
+    }
+
+    public int getQuantity() {
+        return Quantity;
+    }
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+
     private String OrderAddress;
     private String OrderEmail;
     private String OrderStatus;
     private String OrderPhoneNum;
 }
+
