@@ -18,18 +18,17 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
-    private int OrderAgreedPrice;
+    private double OrderAgreedPrice;
     private int SmallSize;
     private int MediumSize;
     private int LargeSize;
     private String ClothMaterial;
+    private String status;
 
     private int Quantity;
 
-    private int status;
 
     @Enumerated(EnumType.STRING)
-    //private UpdateOrderStatus Status;
 
     public Order save(Order order) {
         return null;
@@ -38,7 +37,6 @@ public class Order {
     public int getOrderId() {
         return OrderId;
     }
-
     public void setOrderId(int OrderId) {
         this.OrderId = OrderId;
     }
@@ -46,7 +44,6 @@ public class Order {
     public String getOrderCustomerName() {
         return OrderCustomerName;
     }
-
     public void setOrderCustomerName(String OrderCustomerName) {
         this.OrderCustomerName = OrderCustomerName;
     }
@@ -54,40 +51,49 @@ public class Order {
     public double getOrderAgreedPrice() {
         return OrderAgreedPrice;
     }
-
     public void setOrderAgreedPrice(double OrderAgreedPrice) {
         this.OrderAgreedPrice = OrderAgreedPrice;
     }
 
-    public String getOrderSize() {
-        return OrderSize;
+    public int getSmallSize() {
+        return SmallSize;
+    }
+    public void setSmallSize(int SmallSize) {
+        this.SmallSize = SmallSize;
     }
 
-    public void setOrderSize(String OrderSize) {
-        this.OrderSize = OrderSize;
+    public int getMediumSize() {
+        return MediumSize;
+    }
+    public void setMediumSize(int MediumSize) {
+        this.MediumSize = MediumSize;
     }
 
-    public int getOrderAmount() {
-        return OrderAmount;
+    public int getLargeSize() {
+        return LargeSize;
+    }
+    public void setLargeSize(int LargeSize) {
+        this.LargeSize = LargeSize;
     }
 
-    public void setOrderAmount(int OrderAmount) {
-        this.OrderAmount = OrderAmount;
+    public String getClothMaterial() {
+        return ClothMaterial;
+    }
+    public void setClothMaterial(String ClothMaterial) {
+        this.ClothMaterial = ClothMaterial;
     }
 
     public int getQuantity() {
         return Quantity;
     }
-
     public void setQuantity(int Quantity) {
         this.Quantity = Quantity;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
-
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }
