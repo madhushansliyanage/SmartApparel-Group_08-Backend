@@ -145,7 +145,31 @@ public class CustomerController {
 //    }
 
     // Delete a customer
-    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
+//    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
+//    public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
+//        try {
+//            String response = customerService.deleteCustomer(CustomerId);
+//            // Handle different responses from the service
+//            if (response.equals("00")){
+//                responseDTO.setCode(VarList.RSP_SUCCESS);
+//                responseDTO.setMessage("Successful.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+//            }else {
+//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+//                responseDTO.setMessage("No customer available.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception e){
+//            responseDTO.setCode(VarList.RSP_ERROR);
+//            responseDTO.setMessage(e.getMessage());
+//            responseDTO.setContent(null);
+//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @DeleteMapping (value = "/deleteCustomer")
     public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
         try {
             String response = customerService.deleteCustomer(CustomerId);

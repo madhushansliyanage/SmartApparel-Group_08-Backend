@@ -2,7 +2,7 @@ package com.example.SmartApparel.Operations.controller;
 
 import com.example.SmartApparel.Operations.dto.OrderDTO;
 import com.example.SmartApparel.Operations.dto.ResponseDTO;
-import com.example.SmartApparel.Operations.entity.Order;
+//import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.service.OrderService;
 import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
-@RequestMapping("api/v1/orders")
-
-@RequestMapping("api/v1/order")
-
+@RequestMapping("/order")
 @CrossOrigin
 public class OrderController {
 
