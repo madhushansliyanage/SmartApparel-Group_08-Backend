@@ -20,13 +20,3 @@ public class OrderDTO {
     private String ClothMaterial;
     private String OrderStatus;
 }
-
-//Status of an order throughout its lifecycle
-//enum UpdateOrderStatus {
-//    PENDING,    //Order pending.
-//    STARTED,    //Order creation started.
-//    PROCESSING, //Order is currently being processed.
-//    QUALITY_CERTIFIED,  //Order quality certification completed.
-//    SHIPPED,    //Order shipped to the customer.
-//    DELIVERED   //Order  delivered to the customer.
-//}

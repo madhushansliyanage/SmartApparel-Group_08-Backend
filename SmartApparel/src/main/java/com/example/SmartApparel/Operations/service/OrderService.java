@@ -1,8 +1,10 @@
 package com.example.SmartApparel.Operations.service;
 
+import com.example.SmartApparel.Operations.dto.CustomerDTO;
 import com.example.SmartApparel.Operations.dto.OrderDTO;
 import com.example.SmartApparel.Operations.dto.ResponseDTO;
 //import com.example.SmartApparel.Operations.dto.UpdateOrderStatus;
+import com.example.SmartApparel.Operations.entity.Customer;
 import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.repo.OrderRepo;
 import com.example.SmartApparel.Operations.util.VarList;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,16 +31,25 @@ public class OrderService {
     private ResponseDTO responseDTO;
 
     // Method to save a new order
-    public String saveOrder(OrderDTO orderDTO){
-        // Check if a order with the given ID already exists
-        if (orderRepo.existsById(orderDTO.getOrderId())){
+    public String saveOrder(OrderDTO orderDTO) {
+        if (orderRepo.existsById(orderDTO.getOrderId())) {
             return VarList.RSP_DUPLICATED;
-        }else {
-            // Save the order to the database
-            orderRepo.save(modelMapper.map(orderDTO, Order.class));
+        } else {
+            Order order = modelMapper.map(orderDTO, Order.class);
+            orderRepo.save(order);
             return VarList.RSP_SUCCESS;
         }
     }
+
+//    public String saveOrder(OrderDTO orderDTO) {
+//        if (orderRepo.existsById(orderDTO.getOrderId())) {
+//            return VarList.RSP_DUPLICATED;
+//        } else {
+//            Order order = modelMapper.map(orderDTO, Order.class);
+//            orderRepo.save(order);
+//            return VarList.RSP_SUCCESS;
+//        }
+//    }
 
     // Method to update an existing order
     public String updateOrder(OrderDTO orderDTO){
@@ -51,6 +63,15 @@ public class OrderService {
         }
     }
 
+//    public String updateOrder(OrderDTO orderDTO) {
+//        if (orderRepo.existsById(orderDTO.getOrderId())) {
+//            orderRepo.save(modelMapper.map(orderDTO, Order.class));
+//            return VarList.RSP_SUCCESS;
+//        } else {
+//            return VarList.RSP_NO_DATA_FOUND;
+//        }
+//    }
+
     // Method to retrieve all orders
     public List<OrderDTO> viewOrder(){
         // Retrieve all orders from the database
@@ -59,14 +80,40 @@ public class OrderService {
         return modelMapper.map(orderList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
     }
 
+//    public List<OrderDTO> viewOrder() {
+//        List<Order> orderList = orderRepo.findAll();
+//        return modelMapper.map(orderList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
+//    }
+
+    public OrderDTO viewOrderById(Integer OrderId) throws Exception {
+        // Retrieve order by ID from the repository
+        Optional<Order> optionalOrder = orderRepo.findById(OrderId);
+
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            return modelMapper.map(order, OrderDTO.class); // Assuming you use ModelMapper to convert entity to DTO
+        } else {
+            throw new Exception("Order not found with ID: " + OrderId);
+        }
+    }
+
     // Method to delete a order
-    public String deleteOrder(int OrderId){
-        // Check if a order with the given ID exists
-        if (orderRepo.existsById(OrderId)){
-            // Delete the customer from the database
+//    public String deleteOrder(int OrderId){
+//        // Check if a order with the given ID exists
+//        if (orderRepo.existsById(OrderId)){
+//            // Delete the customer from the database
+//            orderRepo.deleteById(OrderId);
+//            return VarList.RSP_SUCCESS;
+//        }else{
+//            return VarList.RSP_NO_DATA_FOUND;
+//        }
+//    }
+
+    public String deleteOrder(int OrderId) {
+        if (orderRepo.existsById(OrderId)) {
             orderRepo.deleteById(OrderId);
             return VarList.RSP_SUCCESS;
-        }else{
+        } else {
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
@@ -112,54 +159,6 @@ public class OrderService {
 //        return true;
 //    }
 
-//    //Method for Order Status
-//    public Order UpdateOrderStatus(int orderId) {
-//        // Retrieve the order from the repository by its ID
-//        Order order = orderRepo.findById(orderId).orElse(null);
-//
-//        // If the order is found, update its status
-//        if (order != null) {
-//            switch (order.getStatus()) {
-//                case "CREATED":
-//                    order.setStatus(UpdateOrderStatus.CREATED);   // Update order status to CREATED
-//                    //performQualityCertification(order);    // Perform quality certification tasks
-//                    return orderRepo.save(order);
-//
-//                case "PROCESSING":
-//                    order.setStatus(UpdateOrderStatus.PROCESSING);    // Update order status to PROCESSING
-//                    //performQualityCertification(order); // Perform quality certification tasks
-//                    return orderRepo.save(order);
-//
-//                case "QUALITY_CERTIFIED":
-//                    order.setStatus(UpdateOrderStatus.QUALITY_CERTIFIED); // Update order status to QUALITY_CERTIFIED
-//                    //performQualityCertification(order); // Perform quality certification tasks
-//                    return orderRepo.save(order);
-//                case "SHIPPED":
-//                    order.setStatus(UpdateOrderStatus.SHIPPED); // Update order status to SHIPPED
-//                    //performQualityCertification(order); // Perform quality certification tasks
-//                    return orderRepo.save(order);
-//                case "DELIVERED":
-//                    order.setStatus(UpdateOrderStatus.DELIVERED); // Update order status to DELIVERED
-//                    //performQualityCertification(order); // Perform quality certification tasks
-//                    return orderRepo.save(order);
-//            }
-//            responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//            responseDTO.setMessage("Data not found");
-//            responseDTO.setContent(null);
-//
-//        }
-//        return null;
-//    }
-
-//    public Order OrderStatus(int orderId) {
-//        return null;
-//    }
-
-    // Method to perform quality certification tasks
-//    private void performQualityCertification(Order order) {
-//        // Implement quality certification tasks
-//    }
-
 
     public List<Integer> getCompletedOrderIds() {
 
@@ -168,5 +167,4 @@ public class OrderService {
         // Map the list of entities to a list of DTOs
         return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
     }
-
 }

@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @RequestMapping("/customer")
-
-@RequestMapping("api/v1/customer")
-
 @CrossOrigin
 public class CustomerController {
 
@@ -104,22 +100,25 @@ public class CustomerController {
         }
     }
 
-    @GetMapping (value = "/get")
-    public ResponseEntity getCus(){
+    @GetMapping(value = "/viewCustomer/{customerId}")
+    public ResponseEntity<ResponseDTO> viewCustomerById(@PathVariable("customerId") Integer CustomerId) {
         try {
-            // Retrieve list of customers
-
+            // Retrieve customer by ID
+            CustomerDTO customerDTO = customerService.viewCustomerById(CustomerId);
             responseDTO.setCode(VarList.RSP_SUCCESS);
-            responseDTO.setMessage("Saved Successfully.");
-
-            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
-        }catch (Exception e){
+            responseDTO.setMessage("Customer retrieved successfully.");
+            responseDTO.setContent(customerDTO);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
             responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//
+
     // Search for a customer by ID
 //    @GetMapping (value = "/searchCustomer/{CustomerId}")
 //    public ResponseEntity searchCustomer(@PathVariable int CustomerId){
@@ -145,31 +144,7 @@ public class CustomerController {
 //    }
 
     // Delete a customer
-//    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
-//    public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
-//        try {
-//            String response = customerService.deleteCustomer(CustomerId);
-//            // Handle different responses from the service
-//            if (response.equals("00")){
-//                responseDTO.setCode(VarList.RSP_SUCCESS);
-//                responseDTO.setMessage("Successful.");
-//                responseDTO.setContent(null);
-//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
-//            }else {
-//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//                responseDTO.setMessage("No customer available.");
-//                responseDTO.setContent(null);
-//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-//            }
-//        }catch (Exception e){
-//            responseDTO.setCode(VarList.RSP_ERROR);
-//            responseDTO.setMessage(e.getMessage());
-//            responseDTO.setContent(null);
-//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
-    @DeleteMapping (value = "/deleteCustomer")
+    @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
     public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
         try {
             String response = customerService.deleteCustomer(CustomerId);
@@ -192,4 +167,28 @@ public class CustomerController {
             return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @DeleteMapping (value = "/deleteCustomer")
+//    public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
+//        try {
+//            String response = customerService.deleteCustomer(CustomerId);
+//            // Handle different responses from the service
+//            if (response.equals("00")){
+//                responseDTO.setCode(VarList.RSP_SUCCESS);
+//                responseDTO.setMessage("Successful.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+//            }else {
+//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+//                responseDTO.setMessage("No customer available.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception e){
+//            responseDTO.setCode(VarList.RSP_ERROR);
+//            responseDTO.setMessage(e.getMessage());
+//            responseDTO.setContent(null);
+//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -53,6 +54,18 @@ public class CustomerService {
         List<Customer> customerList = customerRepo.findAll();
         // Map the list of entities to a list of DTOs
         return modelMapper.map(customerList, new TypeToken<ArrayList<CustomerDTO>>(){}.getType());
+    }
+
+    public CustomerDTO viewCustomerById(Integer CustomerId) throws Exception {
+        // Retrieve customer by ID from the repository
+        Optional<Customer> optionalCustomer = customerRepo.findById(CustomerId);
+
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            return modelMapper.map(customer, CustomerDTO.class); // Assuming you use ModelMapper to convert entity to DTO
+        } else {
+            throw new Exception("Customer not found with ID: " + CustomerId);
+        }
     }
 
     // Method to search for a customer by ID
