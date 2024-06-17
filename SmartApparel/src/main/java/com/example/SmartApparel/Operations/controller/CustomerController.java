@@ -117,32 +117,6 @@ public class CustomerController {
         }
     }
 
-//
-
-    // Search for a customer by ID
-//    @GetMapping (value = "/searchCustomer/{CustomerId}")
-//    public ResponseEntity searchCustomer(@PathVariable int CustomerId){
-//        try {
-//            CustomerDTO customerDTO = customerService.searchCustomer(CustomerId);
-//            if (customerDTO != null){
-//                responseDTO.setCode(VarList.RSP_Success);
-//                responseDTO.setMessage("Successful.");
-//                responseDTO.setContent(customerDTO);
-//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
-//            }else {
-//                responseDTO.setCode(VarList.RSP_No_Data_Found);
-//                responseDTO.setMessage("No customer available for this customerId.");
-//                responseDTO.setContent(null);
-//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-//            }
-//        }catch (Exception e){
-//            responseDTO.setCode(VarList.RSP_Error);
-//            responseDTO.setMessage(e.getMessage());
-//            responseDTO.setContent(null);
-//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
     // Delete a customer
     @DeleteMapping (value = "/deleteCustomer/{CustomerId}")
     public ResponseEntity deleteCustomer(@PathVariable int CustomerId){
@@ -181,6 +155,30 @@ public class CustomerController {
 //            }else {
 //                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
 //                responseDTO.setMessage("No customer available.");
+//                responseDTO.setContent(null);
+//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+//            }
+//        }catch (Exception e){
+//            responseDTO.setCode(VarList.RSP_ERROR);
+//            responseDTO.setMessage(e.getMessage());
+//            responseDTO.setContent(null);
+//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    // Search for a customer by ID
+//    @GetMapping (value = "/searchCustomer/{CustomerId}")
+//    public ResponseEntity searchCustomer(@PathVariable int CustomerId){
+//        try {
+//            CustomerDTO customerDTO = customerService.searchCustomer(CustomerId);
+//            if (customerDTO != null){
+//                responseDTO.setCode(VarList.RSP_SUCCESS);
+//                responseDTO.setMessage("Successful.");
+//                responseDTO.setContent(customerDTO);
+//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+//            }else {
+//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+//                responseDTO.setMessage("No customer available for this customerId.");
 //                responseDTO.setContent(null);
 //                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
 //            }

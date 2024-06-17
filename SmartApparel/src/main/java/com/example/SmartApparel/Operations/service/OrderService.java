@@ -1,10 +1,8 @@
 package com.example.SmartApparel.Operations.service;
 
-import com.example.SmartApparel.Operations.dto.CustomerDTO;
 import com.example.SmartApparel.Operations.dto.OrderDTO;
 import com.example.SmartApparel.Operations.dto.ResponseDTO;
 //import com.example.SmartApparel.Operations.dto.UpdateOrderStatus;
-import com.example.SmartApparel.Operations.entity.Customer;
 import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.repo.OrderRepo;
 import com.example.SmartApparel.Operations.util.VarList;
@@ -13,7 +11,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,28 +29,19 @@ public class OrderService {
 
     // Method to save a new order
     public String saveOrder(OrderDTO orderDTO) {
+        // Check if an order with the given ID already exists
         if (orderRepo.existsById(orderDTO.getOrderId())) {
             return VarList.RSP_DUPLICATED;
         } else {
-            Order order = modelMapper.map(orderDTO, Order.class);
-            orderRepo.save(order);
+            // Save the order to the database
+            orderRepo.save(modelMapper.map(orderDTO, Order.class));
             return VarList.RSP_SUCCESS;
         }
     }
 
-//    public String saveOrder(OrderDTO orderDTO) {
-//        if (orderRepo.existsById(orderDTO.getOrderId())) {
-//            return VarList.RSP_DUPLICATED;
-//        } else {
-//            Order order = modelMapper.map(orderDTO, Order.class);
-//            orderRepo.save(order);
-//            return VarList.RSP_SUCCESS;
-//        }
-//    }
-
     // Method to update an existing order
     public String updateOrder(OrderDTO orderDTO){
-        // Check if a order with the given ID exists
+        // Check if an order with the given ID exists
         if (orderRepo.existsById(orderDTO.getOrderId())){
             // Update the order in the database
             orderRepo.save(modelMapper.map(orderDTO,Order.class));
@@ -63,15 +51,6 @@ public class OrderService {
         }
     }
 
-//    public String updateOrder(OrderDTO orderDTO) {
-//        if (orderRepo.existsById(orderDTO.getOrderId())) {
-//            orderRepo.save(modelMapper.map(orderDTO, Order.class));
-//            return VarList.RSP_SUCCESS;
-//        } else {
-//            return VarList.RSP_NO_DATA_FOUND;
-//        }
-//    }
-
     // Method to retrieve all orders
     public List<OrderDTO> viewOrder(){
         // Retrieve all orders from the database
@@ -80,11 +59,7 @@ public class OrderService {
         return modelMapper.map(orderList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
     }
 
-//    public List<OrderDTO> viewOrder() {
-//        List<Order> orderList = orderRepo.findAll();
-//        return modelMapper.map(orderList, new TypeToken<ArrayList<OrderDTO>>(){}.getType());
-//    }
-
+    // Method to view an order by ID
     public OrderDTO viewOrderById(Integer OrderId) throws Exception {
         // Retrieve order by ID from the repository
         Optional<Order> optionalOrder = orderRepo.findById(OrderId);
@@ -97,26 +72,46 @@ public class OrderService {
         }
     }
 
-    // Method to delete a order
-//    public String deleteOrder(int OrderId){
-//        // Check if a order with the given ID exists
-//        if (orderRepo.existsById(OrderId)){
-//            // Delete the customer from the database
-//            orderRepo.deleteById(OrderId);
-//            return VarList.RSP_SUCCESS;
-//        }else{
-//            return VarList.RSP_NO_DATA_FOUND;
-//        }
-//    }
-
+    // Method to delete an order by ID
     public String deleteOrder(int OrderId) {
+        // Check if an order with the given ID exists
         if (orderRepo.existsById(OrderId)) {
+            // Delete the order from the database
             orderRepo.deleteById(OrderId);
             return VarList.RSP_SUCCESS;
         } else {
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
+
+//    public boolean isOrderShipped(Integer OrderId) {
+//        Optional<Order> order = viewOrderById(OrderId);
+//        return order.isPresent() && "Shipped".equalsIgnoreCase(order.get().getOrderStatus());
+//    }
+
+//    public boolean isOrderShipped(Integer OrderId) {
+//        try {
+//            OrderDTO order = viewOrderById(OrderId);
+//            return order.get() && "Shipped".equalsIgnoreCase(String.valueOf(order.get().getClass()));
+//        } catch (Exception e) {
+//            // Handle exception (e.g., log it)
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
+    public boolean isOrderShipped(Integer orderId) {
+        try {
+            OrderDTO order = viewOrderById(orderId);
+            return order != null && "Shipped".equalsIgnoreCase(order.getOrderStatus());
+        } catch (Exception e) {
+            // Handle exception
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
 
 //    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
@@ -160,6 +155,20 @@ public class OrderService {
 //    }
 
 
+    // Method to search for an order by ID
+//    public OrderDTO searchOrder(int OrderId){
+//        // Check if an order with the given ID exists
+//        if (orderRepo.existsById(OrderId)){
+//            // Retrieve the order from the database
+////            Order order = orderRepo.findById(OrderId).orElse(null);
+//            Order order = orderRepo.searchOrder(OrderId);
+//            // Map the entity to a DTO and return
+//            return modelMapper.map(order,OrderDTO.class);
+//        }else {
+//            return null;
+//        }
+//    }
+
     public List<Integer> getCompletedOrderIds() {
 
         // Retrieve all orders from the database
@@ -167,4 +176,6 @@ public class OrderService {
         // Map the list of entities to a list of DTOs
         return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
     }
+
+
 }

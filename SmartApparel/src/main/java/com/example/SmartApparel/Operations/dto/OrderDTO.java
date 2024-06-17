@@ -1,5 +1,6 @@
 package com.example.SmartApparel.Operations.dto;
 
+import com.example.SmartApparel.Operations.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,8 @@ public class OrderDTO {
     private int LargeSize;
     private String ClothMaterial;
     private String OrderStatus;
+
+    public Order get() {
+        return null;
+    }
 }

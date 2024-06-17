@@ -68,6 +68,18 @@ public class CustomerService {
         }
     }
 
+    // Method to delete a customer by ID
+    public String deleteCustomer(int CustomerId){
+        // Check if a customer with the given ID exists
+        if (customerRepo.existsById(CustomerId)){
+            // Delete the customer from the database
+            customerRepo.deleteById(CustomerId);
+            return VarList.RSP_SUCCESS;
+        }else{
+            return VarList.RSP_NO_DATA_FOUND;
+        }
+    }
+
     // Method to search for a customer by ID
 //    public CustomerDTO searchCustomer(int CustomerId){
 //        // Check if a customer with the given ID exists
@@ -80,16 +92,4 @@ public class CustomerService {
 //            return null;
 //        }
 //    }
-
-    // Method to delete a customer by ID
-    public String deleteCustomer(int CustomerId){
-        // Check if a customer with the given ID exists
-        if (customerRepo.existsById(CustomerId)){
-            // Delete the customer from the database
-            customerRepo.deleteById(CustomerId);
-            return VarList.RSP_SUCCESS;
-        }else{
-            return VarList.RSP_NO_DATA_FOUND;
-        }
-    }
 }
