@@ -26,6 +26,9 @@ public class Order {
     private String ClothMaterial;
     private String OrderStatus;
 
+    @Lob
+    private byte[] billPdf;
+
 //    private int Quantity;
 
 
@@ -103,6 +106,13 @@ public class Order {
     }
     public void setOrderStatus(String OrderStatus) {
         this.OrderStatus = OrderStatus;
+    }
+
+    public byte[] getBillPdf() {
+        return billPdf;
+    }
+    public void setBillPdf(byte[] billPdf) {
+        this.billPdf = billPdf;
     }
 }
 

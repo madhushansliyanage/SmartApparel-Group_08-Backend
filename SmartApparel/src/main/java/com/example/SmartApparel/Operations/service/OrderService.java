@@ -51,6 +51,23 @@ public class OrderService {
         }
     }
 
+    // Method to update an existing order by orderId
+    public String updateOrderById(OrderDTO orderDTO) {
+        try {
+            // Check if an order with the given ID exists
+            if (orderRepo.existsById(orderDTO.getOrderId())) {
+                // Update the order in the database
+                orderRepo.save(modelMapper.map(orderDTO, Order.class));
+                return VarList.RSP_SUCCESS;
+            } else {
+                return VarList.RSP_NO_DATA_FOUND;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return VarList.RSP_ERROR;
+        }
+    }
+
     // Method to retrieve all orders
     public List<OrderDTO> viewOrder(){
         // Retrieve all orders from the database
@@ -84,35 +101,21 @@ public class OrderService {
         }
     }
 
-//    public boolean isOrderShipped(Integer OrderId) {
-//        Optional<Order> order = viewOrderById(OrderId);
-//        return order.isPresent() && "Shipped".equalsIgnoreCase(order.get().getOrderStatus());
-//    }
+    public Order getOrderById(Integer OrderId) {
+        return orderRepo.findById(OrderId).orElse(null);
+    }
 
-//    public boolean isOrderShipped(Integer OrderId) {
+//    public boolean checkOrderShipped(Integer OrderId) {
 //        try {
 //            OrderDTO order = viewOrderById(OrderId);
-//            return order.get() && "Shipped".equalsIgnoreCase(String.valueOf(order.get().getClass()));
+//            if (order.get()) if ("Shipped".equalsIgnoreCase(String.valueOf(order.get()))) return true;
+//            return false;
 //        } catch (Exception e) {
-//            // Handle exception (e.g., log it)
+//            // Handle exception
 //            e.printStackTrace();
 //            return false;
 //        }
 //    }
-
-    public boolean isOrderShipped(Integer orderId) {
-        try {
-            OrderDTO order = viewOrderById(orderId);
-            return order != null && "Shipped".equalsIgnoreCase(order.getOrderStatus());
-        } catch (Exception e) {
-            // Handle exception
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-
 
 //    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
 //        order = orderRepo.findById(order.getOrderId()).orElse(null);
