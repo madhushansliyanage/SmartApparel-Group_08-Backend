@@ -18,15 +18,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
     private String OrderCustomerName;
-
     private double OrderAgreedPrice;
+    private String ModelName;
     private int SmallSize;
     private int MediumSize;
     private int LargeSize;
     private String ClothMaterial;
-    private String status;
+    private String OrderStatus;
 
-    private int Quantity;
+    @Lob
+    private byte[] billPdf;
+
+//    private int Quantity;
 
 
     @Enumerated(EnumType.STRING)
@@ -54,6 +57,13 @@ public class Order {
     }
     public void setOrderAgreedPrice(double OrderAgreedPrice) {
         this.OrderAgreedPrice = OrderAgreedPrice;
+    }
+
+    public String getModelName() {
+        return ModelName;
+    }
+    public void setModelName(String ModelName) {
+        this.ModelName = ModelName;
     }
 
     public int getSmallSize() {
@@ -84,24 +94,26 @@ public class Order {
         this.ClothMaterial = ClothMaterial;
     }
 
-    public int getQuantity() {
-        return Quantity;
+//    public int getQuantity() {
+//        return Quantity;
+//    }
+//    public void setQuantity(int Quantity) {
+//        this.Quantity = Quantity;
+//    }
+
+    public String getOrderStatus() {
+        return OrderStatus;
     }
-    public void setQuantity(int Quantity) {
-        this.Quantity = Quantity;
+    public void setOrderStatus(String OrderStatus) {
+        this.OrderStatus = OrderStatus;
     }
 
-    public String getStatus() {
-        return status;
+    public byte[] getBillPdf() {
+        return billPdf;
     }
-    public void setStatus(String status) {
-        this.status = status;
+    public void setBillPdf(byte[] billPdf) {
+        this.billPdf = billPdf;
     }
 }
 
-    private String OrderAddress;
-    private String OrderEmail;
-    private String OrderStatus;
-    private String OrderPhoneNum;
-}
 
