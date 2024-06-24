@@ -12,8 +12,6 @@ public interface OrderRepo extends JpaRepository <Order,Integer>{
     @Query(value = "SELECT order_id FROM orders where order_status='Completed'", nativeQuery = true)
     List<Integer> getCompletedOrders();
 
-//    @Query(value = "SELECT order_status FROM orders where order_id=order_id", nativeQuery = true)
-//    Order searchOrder(Integer OrderId);
-
     Optional<Order> findById(Integer OrderId);
+    List<Order> findByOrderStatus(String OrderStatus);
 }

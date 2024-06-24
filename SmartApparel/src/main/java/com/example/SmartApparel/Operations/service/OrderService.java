@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -105,17 +106,29 @@ public class OrderService {
         return orderRepo.findById(OrderId).orElse(null);
     }
 
-//    public boolean checkOrderShipped(Integer OrderId) {
-//        try {
-//            OrderDTO order = viewOrderById(OrderId);
-//            if (order.get()) if ("Shipped".equalsIgnoreCase(String.valueOf(order.get()))) return true;
-//            return false;
-//        } catch (Exception e) {
-//            // Handle exception
-//            e.printStackTrace();
-//            return false;
-//        }
+    public List<OrderDTO> ShippedOrders() {
+        List<Order> shippedOrders = orderRepo.findByOrderStatus("Shipped");
+        return shippedOrders.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private OrderDTO convertToDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrderId(order.getOrderId());
+        orderDTO.setOrderCustomerName(order.getOrderCustomerName());
+        orderDTO.setOrderAgreedPrice(order.getOrderAgreedPrice());
+        orderDTO.setModelName(order.getModelName());
+        orderDTO.setSmallSize(order.getSmallSize());
+        orderDTO.setMediumSize(order.getMediumSize());
+        orderDTO.setLargeSize(order.getLargeSize());
+        orderDTO.setClothMaterial(order.getClothMaterial());
+        orderDTO.setOrderStatus(order.getOrderStatus());
+        return orderDTO;
+    }
+
+//    public List<Order> getShippedOrders() {
+//        return orderRepo.findByOrderStatus("Shipped");
 //    }
+
 
 //    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
 //        order = orderRepo.findById(order.getOrderId()).orElse(null);
@@ -155,21 +168,6 @@ public class OrderService {
 //            //return null;
 //        }
 //        return true;
-//    }
-
-
-    // Method to search for an order by ID
-//    public OrderDTO searchOrder(int OrderId){
-//        // Check if an order with the given ID exists
-//        if (orderRepo.existsById(OrderId)){
-//            // Retrieve the order from the database
-////            Order order = orderRepo.findById(OrderId).orElse(null);
-//            Order order = orderRepo.searchOrder(OrderId);
-//            // Map the entity to a DTO and return
-//            return modelMapper.map(order,OrderDTO.class);
-//        }else {
-//            return null;
-//        }
 //    }
 
     public List<Integer> getCompletedOrderIds() {
