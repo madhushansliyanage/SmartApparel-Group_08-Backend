@@ -6,13 +6,21 @@ import com.example.SmartApparel.Operations.entity.Order;
 import com.example.SmartApparel.Operations.service.OrderService;
 import com.example.SmartApparel.Operations.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/order")
@@ -25,33 +33,35 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    // Save order details
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
     @PostMapping(value = "/saveOrder")
-    public ResponseEntity saveOrder(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<ResponseDTO> saveOrder(@RequestBody OrderDTO orderDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
         try {
             String response = orderService.saveOrder(orderDTO);
-            // Handle different responses from the service
-            if (response.equals("00")){
+            if (response.equals("00")) {
                 responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Saved Successfully.");
                 responseDTO.setContent(orderDTO);
-                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(responseDTO, HttpStatus.ACCEPTED);
             } else if (response.equals("06")) {
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Already Registered.");
                 responseDTO.setContent(orderDTO);
-                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-            }else {
+                return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+            } else {
                 responseDTO.setCode(VarList.RSP_FAIL);
                 responseDTO.setMessage("Error");
                 responseDTO.setContent(null);
-                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
+            logger.error("Error occurred while saving order: {}", e.getMessage());
             responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -85,36 +95,6 @@ public class OrderController {
         }
     }
 
-    // Update order details related to Id
-//    @PutMapping (value = "/updateOrder/{orderId}")
-//    public ResponseEntity updateOrderById(@RequestBody OrderDTO orderDTO){
-//        try {
-//            String response = orderService.updateOrder(orderDTO);
-//            // Handle different responses from the service
-//            if (response.equals("00")){
-//                responseDTO.setCode(VarList.RSP_SUCCESS);
-//                responseDTO.setMessage("Updated Successfully.");
-//                responseDTO.setContent(orderDTO);
-//                return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
-//            } else if (response.equals("01")) {
-//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//                responseDTO.setMessage("Not a Registered Employee");
-//                responseDTO.setContent(orderDTO);
-//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-//            }else {
-//                responseDTO.setCode(VarList.RSP_FAIL);
-//                responseDTO.setMessage("Error");
-//                responseDTO.setContent(null);
-//                return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
-//            }
-//        }catch (Exception e){
-//            responseDTO.setCode(VarList.RSP_ERROR);
-//            responseDTO.setMessage(e.getMessage());
-//            responseDTO.setContent(null);
-//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
     @PutMapping("/updateOrder/{orderId}")
     public ResponseEntity<?> updateOrderById(@PathVariable Integer OrderId, @RequestBody OrderDTO orderDTO) {
         orderDTO.setOrderId(OrderId); // Set the orderId in the DTO
@@ -147,8 +127,8 @@ public class OrderController {
     }
 
     //View order details related to Id
-    @GetMapping(value = "/viewOrder/{orderId}")
-    public ResponseEntity<ResponseDTO> viewOrderById(@PathVariable("orderId") Integer OrderId) {
+    @GetMapping(value = "/viewOrder/{OrderId}")
+    public ResponseEntity<ResponseDTO> viewOrderById(@PathVariable("OrderId") Integer OrderId) {
         try {
             OrderDTO orderDTO = orderService.viewOrderById(OrderId);
             responseDTO.setCode(VarList.RSP_SUCCESS);
@@ -189,53 +169,84 @@ public class OrderController {
     }
 
     @GetMapping("/checkShipped/{OrderId}")
-    public ResponseEntity<?> checkShipped(@PathVariable Integer OrderId) {
+    public ResponseEntity<ResponseDTO> checkShipped(@PathVariable Integer OrderId) {
         Order order = orderService.getOrderById(OrderId);
-        if (order != null && "shipped".equalsIgnoreCase(order.getOrderStatus())) {
+        ResponseDTO responseDTO = new ResponseDTO(); // Ensure this is properly instantiated
+
+        if (order != null && "Shipped".equalsIgnoreCase(order.getOrderStatus())) {
             responseDTO.setCode(VarList.RSP_SUCCESS);
             responseDTO.setMessage("Successful.");
-            responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+            responseDTO.setContent(true);
+            return new ResponseEntity<>(responseDTO, HttpStatus.ACCEPTED);
         } else {
             responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
             responseDTO.setMessage("Order is not yet shipped or Invalid OrderId");
-            responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+            responseDTO.setContent(false);
+            return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @GetMapping("/generateBill/{OrderId}")
-    public ResponseEntity<?> generateBill(@PathVariable Integer OrderId) {
+    public ResponseEntity<ResponseDTO> generateBill(@PathVariable Integer OrderId) {
         Order order = orderService.getOrderById(OrderId);
-        if (order != null && order.getBillPdf() != null) {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bill.pdf")
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(order.getBillPdf());
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        if (order != null) {
+            double totalAmount = order.getOrderAgreedPrice() *
+                    (order.getSmallSize() + order.getMediumSize() + order.getLargeSize());
+
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+            orderDetailsDTO.setOrder(order);
+            orderDetailsDTO.setTotalAmount(totalAmount);
+
+            responseDTO.setCode(VarList.RSP_SUCCESS);
+            responseDTO.setMessage("Successful.");
+            responseDTO.setContent(orderDetailsDTO);
+
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
         } else {
             responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-            responseDTO.setMessage("Bill is not yet available for this order");
-            responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.BAD_REQUEST);
+            responseDTO.setMessage("Invalid OrderId");
+            return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/shippedOrders")
-    public ResponseEntity ShippedOrders() {
-        try {
-            List<OrderDTO> orderDTOList = orderService.ShippedOrders();
-            responseDTO.setCode(VarList.RSP_SUCCESS);
-            responseDTO.setMessage("Fetched Successfully.");
-            responseDTO.setContent(orderDTOList);
-            return new ResponseEntity(responseDTO, HttpStatus.OK);
-        } catch (Exception e) {
-            responseDTO.setCode(VarList.RSP_ERROR);
-            responseDTO.setMessage(e.getMessage());
-            responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/downloadReport/{OrderId}")
+    public ResponseEntity<InputStreamResource> downloadReport(@PathVariable Integer OrderId) throws IOException {
+        Order order = orderService.getOrderById(OrderId);
+
+        if (order != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(("Order ID: " + order.getOrderId() + "\n").getBytes());
+            outputStream.write(("Order Customer Name: " + order.getOrderCustomerName() + "\n").getBytes());
+            outputStream.write(("Model Name: " + order.getModelName() + "\n").getBytes());
+            outputStream.write(("Small Size: " + order.getSmallSize() + "\n").getBytes());
+            outputStream.write(("Medium Size: " + order.getMediumSize() + "\n").getBytes());
+            outputStream.write(("Large Size: " + order.getLargeSize() + "\n").getBytes());
+            outputStream.write(("Agreed Price: $" + order.getOrderAgreedPrice() + "\n").getBytes());
+            outputStream.write(("Cloth Material: " + order.getClothMaterial() + "\n").getBytes());
+            outputStream.write(("Order Status: " + order.getOrderStatus() + "\n").getBytes());
+            outputStream.write(("Order Covered Amount: $" + order.getOrderCoveredAmount() + "\n").getBytes());
+            double totalAmount = order.getOrderAgreedPrice() *
+                    (order.getSmallSize() + order.getMediumSize() + order.getLargeSize());
+            outputStream.write(("Total Amount: $" + totalAmount + "\n").getBytes());
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=order_report_" + OrderId + ".txt");
+
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .body(new InputStreamResource(inputStream));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(null);
         }
     }
-    
+
 
 
 
@@ -259,3 +270,19 @@ public class OrderController {
     }
 
 }
+
+//public class OrderStatusResponse {
+//    private String OrderStatus;
+//
+//    public OrderStatusResponse(String OrderStatus) {
+//        this.OrderStatus = OrderStatus;
+//    }
+//
+//    public String getOrderStatus() {
+//        return OrderStatus;
+//    }
+//
+//    public void setOrderStatus(String OrderStatus) {
+//        this.OrderStatus = OrderStatus;
+//    }
+//}

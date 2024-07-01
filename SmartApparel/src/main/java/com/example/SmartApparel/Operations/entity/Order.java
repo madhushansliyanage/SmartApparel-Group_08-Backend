@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.sql.Update;
 
 @Entity
 @AllArgsConstructor
@@ -25,9 +24,7 @@ public class Order {
     private int LargeSize;
     private String ClothMaterial;
     private String OrderStatus;
-
-    @Lob
-    private byte[] billPdf;
+    private int OrderCoveredAmount;
 
 //    private int Quantity;
 
@@ -107,11 +104,11 @@ public class Order {
         this.OrderStatus = OrderStatus;
     }
 
-    public byte[] getBillPdf() {
-        return billPdf;
+    public int getOrderCoveredAmount() {
+        return OrderCoveredAmount;
     }
-    public void setBillPdf(byte[] billPdf) {
-        this.billPdf = billPdf;
+    public void setOrderCoveredAmount(int OrderCoveredAmount) {
+        this.OrderCoveredAmount = OrderCoveredAmount;
     }
 }
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,15 +29,13 @@ public class OrderService {
 
     // Method to save a new order
     public String saveOrder(OrderDTO orderDTO) {
-        // Check if an order with the given ID already exists
-        if (orderRepo.existsById(orderDTO.getOrderId())) {
-            return VarList.RSP_DUPLICATED;
-        } else {
-            // Save the order to the database
-            orderRepo.save(modelMapper.map(orderDTO, Order.class));
-            return VarList.RSP_SUCCESS;
-        }
+        // Map OrderDTO to Order entity
+        Order order = modelMapper.map(orderDTO, Order.class);
+        // Save the order to the database
+        orderRepo.save(order);
+        return VarList.RSP_SUCCESS;
     }
+
 
     // Method to update an existing order
     public String updateOrder(OrderDTO orderDTO){
@@ -106,30 +103,6 @@ public class OrderService {
         return orderRepo.findById(OrderId).orElse(null);
     }
 
-    public List<OrderDTO> ShippedOrders() {
-        List<Order> shippedOrders = orderRepo.findByOrderStatus("Shipped");
-        return shippedOrders.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    private OrderDTO convertToDTO(Order order) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrderId(order.getOrderId());
-        orderDTO.setOrderCustomerName(order.getOrderCustomerName());
-        orderDTO.setOrderAgreedPrice(order.getOrderAgreedPrice());
-        orderDTO.setModelName(order.getModelName());
-        orderDTO.setSmallSize(order.getSmallSize());
-        orderDTO.setMediumSize(order.getMediumSize());
-        orderDTO.setLargeSize(order.getLargeSize());
-        orderDTO.setClothMaterial(order.getClothMaterial());
-        orderDTO.setOrderStatus(order.getOrderStatus());
-        return orderDTO;
-    }
-
-//    public List<Order> getShippedOrders() {
-//        return orderRepo.findByOrderStatus("Shipped");
-//    }
-
-
 //    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
 //        order = orderRepo.findById(order.getOrderId()).orElse(null);
 //        if (order != null) {
@@ -177,6 +150,4 @@ public class OrderService {
         // Map the list of entities to a list of DTOs
         return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
     }
-
-
 }
