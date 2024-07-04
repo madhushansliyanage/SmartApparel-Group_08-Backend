@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing expenses.
+ */
+
 @RestController
 @RequestMapping("api/v1/expense")
 @CrossOrigin
