@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
+/**
+ * Repository interface for accessing and managing Expense entities.
+ * Extends JpaRepository to provide CRUD operations and custom queries.
+ */
 public interface ExpenseRepo extends JpaRepository<Expense,Integer> {
 
     //Query for get Total amount of expenses..............................................................................................

@@ -14,16 +14,22 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Service class to handle business logic related to Expense operations.
+ */
+
 @Service
 @Transactional
-
 public class ExpenseService {
     @Autowired
     private ExpenseRepo expenseRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper; // Injecting the ModelMapper for object mapping
 
+
+    //for add expenses -------------------------------------------------------------------------------------------------------------------------
     public String saveExpense(ExpenseDTO expenseDTO){
         if (expenseRepo.existsById(expenseDTO.getExpense_ID())){
             return VarList.RSP_DUPLICATED;
@@ -33,6 +39,8 @@ public class ExpenseService {
         }
     }
 
+
+    //for update expenses ----------------------------------------------------------------------------------------------------------------------
     public String updateExpense(ExpenseDTO expenseDTO){
         if (expenseRepo.existsById(expenseDTO.getExpense_ID())){
             expenseRepo.save(modelMapper.map(expenseDTO,Expense.class));
@@ -42,11 +50,15 @@ public class ExpenseService {
         }
     }
 
+
+    //for view expenses -------------------------------------------------------------------------------------------------------------------------
     public List<ExpenseDTO> viewExpense(){
         List<Expense> expenseList = expenseRepo.findAll();
         return modelMapper.map(expenseList, new TypeToken<ArrayList<ExpenseDTO>>(){}.getType());
     }
 
+
+    //for search expense using Expense_id ------------------------------------------------------------------------------------------------------
     public ExpenseDTO searchExpense(int ExpenseId){ //need to search using customer name
         if (expenseRepo.existsById(ExpenseId)){
             Expense expense = expenseRepo.findById(ExpenseId).orElse(null);
@@ -56,6 +68,8 @@ public class ExpenseService {
         }
     }
 
+
+    //for delete expense using Expense_id -----------------------------------------------------------------------------------------------------
     public String deleteExpense(int ExpenseId){
         if (expenseRepo.existsById(ExpenseId)){
             expenseRepo.deleteById(ExpenseId);
@@ -65,7 +79,8 @@ public class ExpenseService {
         }
     }
 
-    // To get sum of the Sales
+
+    // To get sum of the Expenses ------------------------------------------------------------------------------------------------------------
     public double getTotalExpenseSum() {
         return expenseRepo.getTotalExpenseSum();
     }

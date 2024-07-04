@@ -6,6 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+
+/**
+ * Repository interface for accessing and managing Revenue entities.
+ * Extends JpaRepository to provide CRUD operations and custom queries.
+ */
 public interface RevenueRepo extends JpaRepository<Revenue,Integer> {
 
     //Query for get total sum of revenue..................................................................................................

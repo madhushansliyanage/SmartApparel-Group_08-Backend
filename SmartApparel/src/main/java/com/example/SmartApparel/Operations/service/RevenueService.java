@@ -15,9 +15,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class to handle business logic related to Revenue operations.
+ */
+
 @Service
 @Transactional
-
 public class RevenueService {
     @Autowired
     private RevenueRepo revenueRepo;
@@ -25,6 +28,7 @@ public class RevenueService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //for add revenue -------------------------------------------------------------------------------------------------------------------------
     public String saveRevenue(RevenueDTO revenueDTO){
         if (revenueRepo.existsById(revenueDTO.getRevenue_ID())){
             return VarList.RSP_DUPLICATED;
@@ -34,6 +38,7 @@ public class RevenueService {
         }
     }
 
+    //for update revenue ------------------------------------------------------------------------------------------------------------------------
     public String updateRevenue(RevenueDTO revenueDTO){
         if (revenueRepo.existsById(revenueDTO.getRevenue_ID())){
             revenueRepo.save(modelMapper.map(revenueDTO,Revenue.class));
@@ -43,11 +48,13 @@ public class RevenueService {
         }
     }
 
+    //for view revenue -------------------------------------------------------------------------------------------------------------------------
     public List<RevenueDTO> viewRevenue(){
         List<Revenue> revenueList = revenueRepo.findAll();
         return modelMapper.map(revenueList, new TypeToken<ArrayList<RevenueDTO>>(){}.getType());
     }
 
+    //for search revenue by id -------------------------------------------------------------------------------------------------------------------------
     public RevenueDTO searchRevenue(int RevenueId){ //need to search using customer name
         if (revenueRepo.existsById(RevenueId)){
             Revenue revenue = revenueRepo.findById(RevenueId).orElse(null);
@@ -57,6 +64,7 @@ public class RevenueService {
         }
     }
 
+    //for delete revenue by id -------------------------------------------------------------------------------------------------------------------------
     public String deleteRevenue(int RevenueId){
         if (revenueRepo.existsById(RevenueId)){
             revenueRepo.deleteById(RevenueId);
