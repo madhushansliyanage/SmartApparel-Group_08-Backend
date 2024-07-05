@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * Data Transfer Object (DTO) for transferring expense information.
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

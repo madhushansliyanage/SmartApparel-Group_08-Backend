@@ -2,7 +2,7 @@ package com.example.SmartApparel.Operations.util;
 
 // Utility class for storing response codes
 public class VarList {
-    // Success response code
+    // Utility class for storing response codes
     public static final String RSP_SUCCESS = "00";
 
     // Response code for no data found
