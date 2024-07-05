@@ -24,11 +24,7 @@ public class SalaryParameterController {
     @Autowired
     private ResponseDTO responseDTO;
 
-    /**
-     * Endpoint for viewing all salary parameters.
-     *
-     * @return ResponseEntity containing the list of salary parameters or an appropriate error message.
-     */
+    //Endpoint for viewing all salary parameters.
     @GetMapping("/view")
     public ResponseEntity viewSalaryParams() {
         try {
@@ -57,12 +53,7 @@ public class SalaryParameterController {
         }
     }
 
-    /**
-     * Endpoint for searching a salary parameter by ID.
-     *
-     * @param spId The ID of the salary parameter to search.
-     * @return ResponseEntity containing the salary parameter details or an appropriate error message.
-     */
+    //Endpoint for searching a salary parameter by ID.
     @GetMapping("/search-by-id/{spId}")
     public ResponseEntity searchSalaryParamByID(@PathVariable int spId) {
         try {
@@ -72,7 +63,7 @@ public class SalaryParameterController {
             // Check if salary parameter is found
             if (salaryParameterDTO == null) {
                 responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-                responseDTO.setMessage("No records of the Salary Parameter");
+                responseDTO.setMessage("No Records of the Salary Parameter");
             } else {
                 responseDTO.setCode(VarList.RSP_SUCCESS);
                 responseDTO.setMessage("Successfully fetched the Salary Parameter");
@@ -91,13 +82,7 @@ public class SalaryParameterController {
         }
     }
 
-    /**
-     * Retrieves salary parameters based on the specified position.
-     *
-     * @param position The position for which to retrieve salary parameters.
-     * @return A {@link SalaryParameterDTO} containing the mapped salary parameters,
-     *         or {@code null} if no parameters are found.
-     */
+    //Retrieves salary parameters based on the specified position.
     @GetMapping("/search-by-position/{position}")
     public ResponseEntity searchSalaryParamByPosition(@PathVariable String position) {
         try {
@@ -126,12 +111,7 @@ public class SalaryParameterController {
         }
     }
 
-    /**
-     * Endpoint for adding a new salary parameter.
-     *
-     * @param salaryParameterDTO The salary parameter data transfer object.
-     * @return ResponseEntity The response entity containing the result of the operation.
-     */
+    //Endpoint for adding a new salary parameter.
     @PostMapping("/add")
     public ResponseEntity addSalaryParam(@RequestBody SalaryParameterDTO salaryParameterDTO){
         try{
@@ -149,7 +129,7 @@ public class SalaryParameterController {
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Position is already exists");
                 responseDTO.setContent(salaryParameterDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
@@ -162,12 +142,7 @@ public class SalaryParameterController {
         }
     }
 
-    /**
-     * Endpoint for updating a salary parameter.
-     *
-     * @param salaryParameterDTO The salary parameter data transfer object.
-     * @return ResponseEntity The response entity containing the result of the operation.
-     */
+    //Endpoint for updating a salary parameter.
     @PutMapping("/update")
     public ResponseEntity updateSalaryParam(@RequestBody SalaryParameterDTO salaryParameterDTO){
         try{

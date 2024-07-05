@@ -19,17 +19,11 @@ import java.util.List;
 @Transactional
 public class SalaryParameterService {
 
-    /**
-     * Repository for managing SalaryParameter entities.
-     */
     @Autowired
-    private SalaryParameterRepo salaryParameterRepo;
+    private SalaryParameterRepo salaryParameterRepo;//Repository for managing SalaryParameter entities.
 
-    /**
-     * ModelMapper for mapping between entities and DTOs.
-     */
     @Autowired
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper;//ModelMapper for mapping between entities and DTOs.
 
     /**
      * Retrieves all Salary Parameters from the SalaryParameter table.
@@ -81,7 +75,6 @@ public class SalaryParameterService {
         }
     }
 
-
     /**
      * Method to save a new Salary Parameters in the SalaryParameters table
      * @param salaryParameterDTO The SalaryParameterDTO to be saved
@@ -98,6 +91,7 @@ public class SalaryParameterService {
         }else{
             // Save new Salary Parameter to repository
             salaryParameterRepo.save(modelMapper.map(salaryParameterDTO, SalaryParameter.class));
+            System.out.println("new salary parameter added: "+modelMapper.map(salaryParameterDTO, SalaryParameter.class));
             // Return success response
             return VarList.RSP_SUCCESS;
         }

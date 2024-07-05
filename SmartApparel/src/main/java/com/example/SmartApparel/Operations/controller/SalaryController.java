@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for managing salary.
+ */
 @RestController
 @RequestMapping("/salary")
+@CrossOrigin
 public class SalaryController {
 
     @Autowired
@@ -20,13 +24,12 @@ public class SalaryController {
     @Autowired
     private ResponseDTO responseDTO;
 
-
+    // Endpoint for viewing all Salaries
     @GetMapping("/view")
     public ResponseEntity viewSalaries(){
         try{
 
             List<SalaryDTO> salaryDTOList = salaryService.viewAllSalary();
-
 
             if(salaryDTOList.isEmpty()){
                 responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
@@ -49,6 +52,7 @@ public class SalaryController {
         }
     }
 
+    // Endpoint for searching salary by ID
     @GetMapping("/search/{salaryId}")
     public ResponseEntity searchSalaryByID(@PathVariable int salaryId){
         try{
@@ -76,6 +80,7 @@ public class SalaryController {
         }
     }
 
+    // Endpoint for calculate salary by ID and yearMonth
     @GetMapping("/calculate/{empId}/{yearMonth}")
     public ResponseEntity calculateSalary(@PathVariable String empId,@PathVariable String yearMonth){
 
@@ -105,23 +110,23 @@ public class SalaryController {
         }
     }
 
+    // Endpoint for calculate all salary by yearMonth
     @GetMapping("/calculate-all/{yearMonth}")
     public ResponseEntity calculateSalaryForAll(@PathVariable String yearMonth){
 
         try{
-            String response = salaryService.calculateSalaryFroAll(yearMonth);
+            String response = salaryService.calculateSalaryForAll(yearMonth);
 
             if(response.equals(VarList.RSP_SUCCESS)){
                 responseDTO.setCode(VarList.RSP_SUCCESS);
-                responseDTO.setMessage("Successfully Calculated Salary");
-                responseDTO.setContent("yearNMonth: "+yearMonth);
+                responseDTO.setMessage("Successfully Calculated Salaries");
+                responseDTO.setContent(yearMonth);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
-            }
-            else{
+            }else{
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
-                responseDTO.setMessage("Salaries for all employees exist for this: "+yearMonth+" year");
+                responseDTO.setMessage("Salaries may have duplicated for "+yearMonth);
                 responseDTO.setContent("yearNMonth: "+yearMonth);
-                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
@@ -129,11 +134,12 @@ public class SalaryController {
             // Handle exceptions
             responseDTO.setCode(VarList.RSP_ERROR);
             responseDTO.setMessage(ex.getMessage());
-            responseDTO.setContent(null);
+            responseDTO.setContent(yearMonth);
             return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // Endpoint for adding a salary
     @PostMapping("/add")
     public ResponseEntity addSalary(@RequestBody SalaryDTO salaryDTO){
         try{
@@ -150,7 +156,7 @@ public class SalaryController {
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Salary id already exists");
                 responseDTO.setContent(salaryDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
@@ -163,6 +169,7 @@ public class SalaryController {
         }
     }
 
+    // Endpoint for updating a salary
     @PutMapping("/update")
     public ResponseEntity updateSalary(@RequestBody SalaryDTO salaryDTO){
         try{
@@ -192,6 +199,7 @@ public class SalaryController {
         }
     }
 
+    // Endpoint for delete salary by ID
     @DeleteMapping("/delete/{salaryId}")
     public ResponseEntity deleteSalaryByID(@PathVariable int salaryId){
 

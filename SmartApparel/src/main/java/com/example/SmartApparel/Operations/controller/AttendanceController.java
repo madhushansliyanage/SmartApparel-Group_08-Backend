@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Controller class for managing attendance.
+ */
 @RestController
 @RequestMapping("/attendance")
 @CrossOrigin
@@ -55,7 +58,6 @@ public class AttendanceController {
     }
 
     // Endpoint to search attendance by attendance id
-
     @GetMapping("/searchbyid/{attendanceId}")
     public ResponseEntity searchAttendanceById(@PathVariable int attendanceId){
         try{
@@ -131,9 +133,9 @@ public class AttendanceController {
             }
             else{
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
-                responseDTO.setMessage("attendance id already exists");
+                responseDTO.setMessage("attendance already exists for the Date and Employee ID");
                 responseDTO.setContent(attendanceDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());

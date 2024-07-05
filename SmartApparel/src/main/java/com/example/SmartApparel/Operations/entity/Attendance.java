@@ -11,20 +11,29 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 import java.sql.Time;
 
+/**
+ * Entity class representing the attendance details of an employee.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Attendance {
+
+    // Unique identifier for the attendance record
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int attendanceId; // Unique identifier for the attendance record
+    private int attendanceId;
 
-    private Date date; // Date of the attendance
+    // Date of the attendance
+    private Date date;
 
-    private Time inTime; // Time when the employee checked in
+    // Time when the employee checked in
+    private Time inTime;
 
-    private Time outTime; // Time when the employee checked out
+    // Time when the employee checked out
+    private Time outTime;
 
-    private String empId; // Employee ID associated with this attendance record
+    // Employee ID associated with this attendance record
+    private String empId;
 }

@@ -1,8 +1,11 @@
 package com.example.SmartApparel.Operations.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 /**
  * Data Transfer Object (DTO) Class for Salary Parameters.
@@ -13,39 +16,21 @@ import lombok.NoArgsConstructor;
 @Data
 public class SalaryParameterDTO {
 
-    /**
-     * Unique identifier for the salary parameter.
-     * This ID uniquely identifies each salary parameter.
-     */
+    // Unique identifier for the salary parameter
     private int salaryParameterId;
 
-    /**
-     * Job position associated with the salary parameter.
-     * This field specifies the job position to which this salary parameter applies.
-     */
+    // Job position associated with the salary parameter
     private String position;
 
-    /**
-     * Basic salary amount.
-     * This field represents the base salary amount for the specified job position.
-     */
-    private float basicSalary;
+    // Basic salary amount
+    private BigDecimal basicSalary;
 
-    /**
-     * Employee Provident Fund (EPF) contribution by the employee.
-     * This field stores the percentage contributed by the employee towards EPF.
-     */
-    private float epfByEmployee;
+    // Employee Provident Fund (EPF) contribution by the employee
+    private BigDecimal epfByEmployee;
 
-    /**
-     * Employee Provident Fund (EPF) contribution by the company.
-     * This field stores the percentage contributed by the company towards EPF.
-     */
-    private float epfByCompany;
+    // Employee Provident Fund (EPF) contribution by the company
+    private BigDecimal epfByCompany;
 
-    /**
-     * Employee Trust Fund (ETF) contribution.
-     * This field stores the percentage contributed towards ETF.
-     */
-    private float etf;
+    // Employee Trust Fund (ETF) contribution
+    private BigDecimal etf;
 }
