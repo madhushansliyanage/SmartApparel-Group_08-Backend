@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+/**
+ * Entity class representing an employee.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
