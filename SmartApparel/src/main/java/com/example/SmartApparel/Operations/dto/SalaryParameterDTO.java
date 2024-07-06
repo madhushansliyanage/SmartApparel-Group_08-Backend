@@ -1,6 +1,5 @@
 package com.example.SmartApparel.Operations.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,4 +32,7 @@ public class SalaryParameterDTO {
 
     // Employee Trust Fund (ETF) contribution
     private BigDecimal etf;
+
+    //Allowance amount pay to the employee's position
+    private BigDecimal allowance;
 }
