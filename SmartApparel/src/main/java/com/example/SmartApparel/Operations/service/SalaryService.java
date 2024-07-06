@@ -42,11 +42,8 @@ public class SalaryService {
      * @return List of SalaryDTOs representing all salary records.
      */
     public List<SalaryDTO> viewAllSalary() {
-
         List<Salary> salaryList = salaryRepo.findAll();
-
-        return modelMapper.map(salaryList, new TypeToken<List<SalaryDTO>>() {
-        }.getType());
+        return modelMapper.map(salaryList, new TypeToken<List<SalaryDTO>>(){}.getType());
     }
 
     /**
@@ -56,13 +53,10 @@ public class SalaryService {
      * @return SalaryDTO representing the found salary record, or null if not found.
      */
     public SalaryDTO searchSalaryByID(int salaryId) {
-
         if (salaryRepo.existsById(salaryId)) {
-
             Salary salary = salaryRepo.findById(salaryId).orElse(null);
             return modelMapper.map(salary, SalaryDTO.class);
         } else {
-
             return null;
         }
     }
@@ -76,17 +70,17 @@ public class SalaryService {
     public String addNewSalary(SalaryDTO salaryDTO) {
         //getting count of salaries by employee id and yearNMonth which stored in the salaryDTO object
         int employeeSalaryCount = salaryRepo.getCalculatedSalaryCount(salaryDTO.getEmpId(), salaryDTO.getYearNMonth());
-        System.out.println("#FROM addNewSalary(salaryDTO):- employeeSalaryCount: " + employeeSalaryCount);
+//        System.out.println("#FROM addNewSalary(salaryDTO):- employeeSalaryCount: " + employeeSalaryCount);
         //checking whether exactly one row count is there
         if (employeeSalaryCount == 0) {
-            System.out.println("#Final: salaryDTO:"+salaryDTO);
+//            System.out.println("#Final: salaryDTO:"+salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else if (employeeSalaryCount == 1) {
             //getting salaryID of that row
             int salaryID = salaryRepo.getSalaryIdByEmpIdAndYearNMonth(salaryDTO.getEmpId(), salaryDTO.getYearNMonth());
             salaryDTO.setSalaryId(salaryID);
-            System.out.println("#Final: salaryDTO:"+salaryDTO);
+//            System.out.println("#Final: salaryDTO:"+salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else {
@@ -101,14 +95,10 @@ public class SalaryService {
      * @return A response string indicating success or failure.
      */
     public String updateSalary(SalaryDTO salaryDTO) {
-
         if (salaryRepo.existsById(salaryDTO.getSalaryId())) {
-
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
-
             return VarList.RSP_SUCCESS;
         } else {
-
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
@@ -120,15 +110,11 @@ public class SalaryService {
      * @return A response string indicating success or failure.
      */
     public String deleteSalaryByID(int salaryId) {
-
         if (salaryRepo.existsById(salaryId)) {
-
             salaryRepo.deleteById(salaryId);
             System.out.println("inside delete service method");
-
             return VarList.RSP_SUCCESS;
         } else {
-
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
@@ -144,14 +130,14 @@ public class SalaryService {
 
         // Retrieve the attendance count for the given employee and month
         int attCount = attendanceRepo.getAttendanceCount(yearMonth, empId);
-        System.out.println("############in calculateSalary(" + yearMonth + "," + empId + ") function##########");
-        System.out.println("#attCount: " + attCount);
+//        System.out.println("############in calculateSalary(" + yearMonth + "," + empId + ") function##########");
+//        System.out.println("#attCount: " + attCount);
         // Retrieve the position of the employee
         String employeePosition = employeeRepo.getEmployeePosition(empId);
-        System.out.println("#employeePosition: " + employeePosition);
+//        System.out.println("#employeePosition: " + employeePosition);
         // Retrieve the salary parameters based on the employee's position
         SalaryParameter salaryParameter = salaryParameterRepo.searchSalaryParamByPosition(employeePosition);
-        System.out.println("#salaryParameter: " + salaryParameter);
+//        System.out.println("#salaryParameter: " + salaryParameter);
 
         SalaryDTO salaryDTO = new SalaryDTO();
 
@@ -182,10 +168,10 @@ public class SalaryService {
             salaryDTO.setYearNMonth(yearMonth);
         }
 // Add the new salary record
-        System.out.println("#salaryDTO: " + salaryDTO);
+//        System.out.println("#salaryDTO: " + salaryDTO);
         String response = addNewSalary(salaryDTO);
-        System.out.println("#response from addNewSalary(salaryDTO): " + response);
-        System.out.println("##########################################################################");
+//        System.out.println("#response from addNewSalary(salaryDTO): " + response);
+//        System.out.println("##########################################################################");
 
         return response;
     }
@@ -201,9 +187,9 @@ public class SalaryService {
         List<String> employeeIdList = employeeRepo.getAllEmployeeId();
 
         // Displaying employee IDs (for debug purposes)
-        System.out.println("########################");
-        employeeIdList.forEach(id -> System.out.println(id));
-        System.out.println("########################");
+//        System.out.println("########################");
+//        employeeIdList.forEach(id -> System.out.println(id));
+//        System.out.println("########################");
 
         // Calculate salary for each employee
         int successCount = 0;
