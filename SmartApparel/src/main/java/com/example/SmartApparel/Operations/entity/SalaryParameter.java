@@ -41,4 +41,11 @@ public class SalaryParameter {
     // Employee Trust Fund (ETF) contribution percentage(by company)
     @Column(precision = 5,scale = 2,nullable = false)
     private BigDecimal etf;
+
+    //Allowance amount pay to the employee's position
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal allowance1;
+
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal allowance2;
 }

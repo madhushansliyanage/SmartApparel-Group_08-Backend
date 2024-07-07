@@ -1,6 +1,7 @@
 package com.example.SmartApparel.Operations.service;
 
 import com.example.SmartApparel.Operations.dto.SalaryDTO;
+import com.example.SmartApparel.Operations.entity.Attendance;
 import com.example.SmartApparel.Operations.entity.Salary;
 import com.example.SmartApparel.Operations.entity.SalaryParameter;
 import com.example.SmartApparel.Operations.repo.AttendanceRepo;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -42,9 +44,7 @@ public class SalaryService {
      * @return List of SalaryDTOs representing all salary records.
      */
     public List<SalaryDTO> viewAllSalary() {
-
         List<Salary> salaryList = salaryRepo.findAll();
-
         return modelMapper.map(salaryList, new TypeToken<List<SalaryDTO>>() {
         }.getType());
     }
@@ -56,13 +56,10 @@ public class SalaryService {
      * @return SalaryDTO representing the found salary record, or null if not found.
      */
     public SalaryDTO searchSalaryByID(int salaryId) {
-
         if (salaryRepo.existsById(salaryId)) {
-
             Salary salary = salaryRepo.findById(salaryId).orElse(null);
             return modelMapper.map(salary, SalaryDTO.class);
         } else {
-
             return null;
         }
     }
@@ -79,14 +76,14 @@ public class SalaryService {
         System.out.println("#FROM addNewSalary(salaryDTO):- employeeSalaryCount: " + employeeSalaryCount);
         //checking whether exactly one row count is there
         if (employeeSalaryCount == 0) {
-            System.out.println("#Final: salaryDTO:"+salaryDTO);
+            System.out.println("#Final: salaryDTO(before save):" + salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else if (employeeSalaryCount == 1) {
             //getting salaryID of that row
             int salaryID = salaryRepo.getSalaryIdByEmpIdAndYearNMonth(salaryDTO.getEmpId(), salaryDTO.getYearNMonth());
             salaryDTO.setSalaryId(salaryID);
-            System.out.println("#Final: salaryDTO:"+salaryDTO);
+            System.out.println("#Final: salaryDTO(before save):" + salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else {
@@ -101,14 +98,10 @@ public class SalaryService {
      * @return A response string indicating success or failure.
      */
     public String updateSalary(SalaryDTO salaryDTO) {
-
         if (salaryRepo.existsById(salaryDTO.getSalaryId())) {
-
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
-
             return VarList.RSP_SUCCESS;
         } else {
-
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
@@ -120,15 +113,11 @@ public class SalaryService {
      * @return A response string indicating success or failure.
      */
     public String deleteSalaryByID(int salaryId) {
-
         if (salaryRepo.existsById(salaryId)) {
-
             salaryRepo.deleteById(salaryId);
             System.out.println("inside delete service method");
-
             return VarList.RSP_SUCCESS;
         } else {
-
             return VarList.RSP_NO_DATA_FOUND;
         }
     }
@@ -143,38 +132,43 @@ public class SalaryService {
     public String calculateSalary(String empId, String yearMonth) {
 
         // Retrieve the attendance count for the given employee and month
-        int attCount = attendanceRepo.getAttendanceCount(yearMonth, empId);
-        System.out.println("############in calculateSalary(" + yearMonth + "," + empId + ") function##########");
-        System.out.println("#attCount: " + attCount);
+//        int attCount = attendanceRepo.getAttendanceCount(yearMonth, empId);
+        List<Attendance> attendanceList = attendanceRepo.getAttListByYearMonthAndEmpId(yearMonth, empId);
+//        System.out.println("############in calculateSalary(" + yearMonth + "," + empId + ") function##########");
+//        System.out.println("#attCount: " + attCount);
         // Retrieve the position of the employee
         String employeePosition = employeeRepo.getEmployeePosition(empId);
-        System.out.println("#employeePosition: " + employeePosition);
+//        System.out.println("#employeePosition: " + employeePosition);
         // Retrieve the salary parameters based on the employee's position
         SalaryParameter salaryParameter = salaryParameterRepo.searchSalaryParamByPosition(employeePosition);
-        System.out.println("#salaryParameter: " + salaryParameter);
+//        System.out.println("#salaryParameter: " + salaryParameter);
 
         SalaryDTO salaryDTO = new SalaryDTO();
 
         if (salaryParameter != null) {
             // Calculate basic salary for the month //float basicForMonth = (salaryParameter.getBasicSalary() / 26) * attCount;
-            BigDecimal basicForMonth = salaryParameter.getBasicSalary().divide(BigDecimal.valueOf(26), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(attCount));
+//            BigDecimal basicForMonth = salaryParameter.getBasicSalary().divide(BigDecimal.valueOf(26), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(attCount));
+            BigDecimal[] basicForMonth = calcMonthlyBasicSalaryOfEmployee(attendanceList,salaryParameter.getBasicSalary());
             // Calculate EPF contribution by the employee //float epfByEmployee = (basicForMonth * salaryParameter.getEpfByEmployee()) / 100;
-            BigDecimal epfByEmployee = basicForMonth.multiply(salaryParameter.getEpfByEmployee()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal epfByEmployee = basicForMonth[0].multiply(salaryParameter.getEpfByEmployee()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate EPF contribution by the company //float epfByCompany = (basicForMonth * salaryParameter.getEpfByCompany()) / 100;
-            BigDecimal epfByCompany = basicForMonth.multiply(salaryParameter.getEpfByCompany()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal epfByCompany = basicForMonth[0].multiply(salaryParameter.getEpfByCompany()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate ETF payment //float etfPayment = (basicForMonth * salaryParameter.getEtf()) / 100;
-            BigDecimal etfPayment = basicForMonth.multiply(salaryParameter.getEtf()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal etfPayment = basicForMonth[0].multiply(salaryParameter.getEtf()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate net salary //float netSalary = basicForMonth - epfByEmployee;
-            BigDecimal netSalary = basicForMonth.subtract(epfByEmployee);
+            BigDecimal netSalary = basicForMonth[0].subtract(epfByEmployee).add(basicForMonth[1]).add(salaryParameter.getAllowance1()).add(salaryParameter.getAllowance2());
 
             // Create a SalaryDTO object with calculated values
             salaryDTO.setEmpId(empId);
             salaryDTO.setStatus("Pending");
             salaryDTO.setYearNMonth(yearMonth);
-            salaryDTO.setBasic(basicForMonth);
+            salaryDTO.setBasic(basicForMonth[0]);
+            salaryDTO.setOverTime(basicForMonth[1]);
             salaryDTO.setEpfByEmployee(epfByEmployee);//salaryDTO.setEpfByEmployee((float) (Math.ceil(epfByEmployee * 100) / 100));
             salaryDTO.setEpfByCompany(epfByCompany);//salaryDTO.setEpfByCompany((float) (Math.ceil(epfByCompany * 100) / 100));
             salaryDTO.setEtfPayment(etfPayment);//salaryDTO.setEtfPayment((float) (Math.ceil(etfPayment * 100) / 100));
+            salaryDTO.setAllowance1(salaryParameter.getAllowance1());
+            salaryDTO.setAllowance2(salaryParameter.getAllowance2());
             salaryDTO.setNetSalary(netSalary);//salaryDTO.setNetSalary((float) (Math.ceil(netSalary * 100) / 100));
         } else {
             salaryDTO.setEmpId(empId);
@@ -182,10 +176,10 @@ public class SalaryService {
             salaryDTO.setYearNMonth(yearMonth);
         }
 // Add the new salary record
-        System.out.println("#salaryDTO: " + salaryDTO);
+//        System.out.println("#salaryDTO: " + salaryDTO);
         String response = addNewSalary(salaryDTO);
-        System.out.println("#response from addNewSalary(salaryDTO): " + response);
-        System.out.println("##########################################################################");
+//        System.out.println("#response from addNewSalary(salaryDTO): " + response);
+//        System.out.println("##########################################################################");
 
         return response;
     }
@@ -201,9 +195,9 @@ public class SalaryService {
         List<String> employeeIdList = employeeRepo.getAllEmployeeId();
 
         // Displaying employee IDs (for debug purposes)
-        System.out.println("########################");
-        employeeIdList.forEach(id -> System.out.println(id));
-        System.out.println("########################");
+//        System.out.println("########################");
+//        employeeIdList.forEach(id -> System.out.println(id));
+//        System.out.println("########################");
 
         // Calculate salary for each employee
         int successCount = 0;
@@ -224,4 +218,50 @@ public class SalaryService {
             return VarList.RSP_DUPLICATED;
         }
     }
+
+    public BigDecimal[] calcMonthlyBasicSalaryOfEmployee(List<Attendance> attendanceList, BigDecimal basicSalary) {
+        //loop through attList
+        for (Attendance attendance : attendanceList) {
+            //verify whether outTime in attendance record is null
+            if(attendance.getOutTime()==null){
+                return new BigDecimal[] { BigDecimal.valueOf(0), BigDecimal.valueOf(0) };
+            }
+        }
+        BigDecimal basicPerHour = basicSalary.divide(BigDecimal.valueOf(26),2,RoundingMode.HALF_UP).divide(BigDecimal.valueOf(8),2,RoundingMode.HALF_UP);
+        BigDecimal basicForMonth = BigDecimal.valueOf(0);
+        BigDecimal overTimeForMonth = BigDecimal.valueOf(0);
+
+        for (Attendance attendance : attendanceList) {
+            double workedHours;
+            LocalTime inTime = attendance.getInTime().toLocalTime();
+            LocalTime outTime = attendance.getOutTime().toLocalTime();
+
+            if (inTime.isBefore(LocalTime.NOON) && outTime.isAfter(LocalTime.of(13, 0))) {
+                // Deducting 1 hour of lunch break
+                workedHours = attendance.getTimeDifferenceInHours() - 1;
+            } else { // May be left AT or BEFORE 12 // May be present AT or AFTER 12
+                workedHours = attendance.getTimeDifferenceInHours();
+            }
+
+            if(!attendance.getDayOfWeek().equals("SATURDAY") && !attendance.getDayOfWeek().equals("SUNDAY")){//Weekdays
+                if (workedHours<= 8 ){
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
+                }else{//with over time calculation
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(8)));//basicForMonth+=basicPerHour*8
+                    overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-8))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-8)
+                }
+            } else if (attendance.getDayOfWeek().equals("SATURDAY")){//SATURDAYS
+                if (workedHours<=5 ){
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
+                }else{//with over time calculation
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(5)));//basicForMonth+=basicPerHour*5
+                    overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-5))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-5)
+                }
+            }else{//SUNDAYS
+                overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours))));//basicForMonth+=(basicPerHour*1.5)*(workedHours)
+            }
+        }
+        return new BigDecimal[] { basicForMonth, overTimeForMonth };
+    }
+
 }
