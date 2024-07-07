@@ -13,4 +13,6 @@ public interface OrderRepo extends JpaRepository <Order,Integer>{
     List<Integer> getCompletedOrders();
 
     Optional<Order> findById(Integer OrderId);
+
+    Optional<Order> findByClothMaterial(String ClothMaterial);
 }

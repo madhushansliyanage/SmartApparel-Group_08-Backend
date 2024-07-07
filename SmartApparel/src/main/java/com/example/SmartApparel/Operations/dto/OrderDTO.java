@@ -21,8 +21,26 @@ public class OrderDTO {
     private String OrderStatus;
     private int OrderCoveredAmount;
 
+    private int totalSize;
+
     public boolean get() {
         return true;
+    }
+
+    private boolean isInventorySufficient;
+
+    public OrderDTO() {}
+
+    public OrderDTO(boolean isInventorySufficient) {
+        this.isInventorySufficient = isInventorySufficient;
+    }
+
+    public boolean isInventorySufficient() {
+        return isInventorySufficient;
+    }
+
+    public void setInventorySufficient(boolean isInventorySufficient) {
+        this.isInventorySufficient = isInventorySufficient;
     }
 
 //    public int getOrderId() {

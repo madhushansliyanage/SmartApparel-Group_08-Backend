@@ -26,6 +26,8 @@ public class Order {
     private String OrderStatus;
     private int OrderCoveredAmount;
 
+    private int totalSize;
+
 //    private int Quantity;
 
     @Enumerated(EnumType.STRING)
@@ -110,6 +112,14 @@ public class Order {
     public void setOrderCoveredAmount(int OrderCoveredAmount) {
         this.OrderCoveredAmount = OrderCoveredAmount;
     }
+
+    public int getTotalSize() {
+        return totalSize;
+    }
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
+    }
+
 }
 
 

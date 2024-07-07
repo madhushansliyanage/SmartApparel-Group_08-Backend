@@ -103,45 +103,23 @@ public class OrderService {
         return orderRepo.findById(OrderId).orElse(null);
     }
 
-//    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
-//        order = orderRepo.findById(order.getOrderId()).orElse(null);
-//        if (order != null) {
-//            // Perform inventory check logic
-//            if (order.getOrderAmount() > order.getQuantity()//get current order quantity ){
-//                boolean inventoryCheckPassed = performInventoryCheck(order);
-//                if (inventoryCheckPassed) {
-//                    // Allocate materials and update order status
-//                    order.getClass(UpdateOrderStatus.PENDING);
-//                    orderRepo.save(order);
-//                    return modelMapper.map(order, OrderDTO.class);
-//                }
-//            }
-//            else {
-//                // Handle insufficient inventory scenario
-//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//                responseDTO.setMessage("Insufficient amount of materials.");
-//                //responseDTO.setContent(null);
-//                return Boolean.parseBoolean(null);
-//            }
-//        }
-//        return Boolean.parseBoolean(null); // Return null if the order is not found
-//    }
+
+//    public boolean checkInventory(String modelName, int totalSize, String clothMaterial) {
+//        Model model = modelRepository.findByName(modelName);
+//        int requiredCloth = totalSize * model.getClothAmount();
+//        int requiredButton = totalSize * model.getButtonAmount();
+//        int requiredZipper = totalSize * model.getZipperAmount();
+//        int requiredElastic = totalSize * model.getElasticAmount();
 //
-//    private boolean performInventoryCheck(Order orderId) {
-//        boolean sufficientMaterials = checkInventoryAndAllocateMaterials(orderId, UpdateOrderStatus);
+//        Inventory inventory = OrderRepo.findByClothMaterial(clothMaterial);
 //
-//        if (sufficientMaterials) {
-//            // Allocate materials and update order status
-//            UpdateOrderStatus(orderId);
-//        } else {
-//            // Handle case when there are insufficient materials
-//            responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//            responseDTO.setMessage("Insufficient amount of materials.");
-//            //responseDTO.setContent(null);
-//            //return null;
-//        }
-//        return true;
+//        return inventory.getClothMaterial() >= requiredCloth &&
+//                inventory.getButton() >= requiredButton &&
+//                inventory.getZipper() >= requiredZipper &&
+//                inventory.getElastic() >= requiredElastic;
 //    }
+
+
 
     public List<Integer> getCompletedOrderIds() {
 

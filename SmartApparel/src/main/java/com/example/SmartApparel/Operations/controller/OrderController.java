@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/order")
@@ -186,7 +186,6 @@ public class OrderController {
         }
     }
 
-
     @GetMapping("/generateBill/{OrderId}")
     public ResponseEntity<ResponseDTO> generateBill(@PathVariable Integer OrderId) {
         Order order = orderService.getOrderById(OrderId);
@@ -212,29 +211,122 @@ public class OrderController {
         }
     }
 
+    
+
     @GetMapping("/downloadReport/{OrderId}")
     public ResponseEntity<InputStreamResource> downloadReport(@PathVariable Integer OrderId) throws IOException {
         Order order = orderService.getOrderById(OrderId);
 
         if (order != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(("Order ID: " + order.getOrderId() + "\n").getBytes());
-            outputStream.write(("Order Customer Name: " + order.getOrderCustomerName() + "\n").getBytes());
-            outputStream.write(("Model Name: " + order.getModelName() + "\n").getBytes());
-            outputStream.write(("Small Size: " + order.getSmallSize() + "\n").getBytes());
-            outputStream.write(("Medium Size: " + order.getMediumSize() + "\n").getBytes());
-            outputStream.write(("Large Size: " + order.getLargeSize() + "\n").getBytes());
-            outputStream.write(("Agreed Price: $" + order.getOrderAgreedPrice() + "\n").getBytes());
-            outputStream.write(("Cloth Material: " + order.getClothMaterial() + "\n").getBytes());
-            outputStream.write(("Order Status: " + order.getOrderStatus() + "\n").getBytes());
-            outputStream.write(("Order Covered Amount: $" + order.getOrderCoveredAmount() + "\n").getBytes());
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document() {
+                @Override
+                public int getLength() {
+                    return 0;
+                }
+
+                @Override
+                public void addDocumentListener(DocumentListener listener) {
+
+                }
+
+                @Override
+                public void removeDocumentListener(DocumentListener listener) {
+
+                }
+
+                @Override
+                public void addUndoableEditListener(UndoableEditListener listener) {
+
+                }
+
+                @Override
+                public void removeUndoableEditListener(UndoableEditListener listener) {
+
+                }
+
+                @Override
+                public Object getProperty(Object key) {
+                    return null;
+                }
+
+                @Override
+                public void putProperty(Object key, Object value) {
+
+                }
+
+                @Override
+                public void remove(int offs, int len) throws BadLocationException {
+
+                }
+
+                @Override
+                public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+
+                }
+
+                @Override
+                public String getText(int offset, int length) throws BadLocationException {
+                    return "";
+                }
+
+                @Override
+                public void getText(int offset, int length, Segment txt) throws BadLocationException {
+
+                }
+
+                @Override
+                public Position getStartPosition() {
+                    return null;
+                }
+
+                @Override
+                public Position getEndPosition() {
+                    return null;
+                }
+
+                @Override
+                public Position createPosition(int offs) throws BadLocationException {
+                    return null;
+                }
+
+                @Override
+                public Element[] getRootElements() {
+                    return new Element[0];
+                }
+
+                @Override
+                public Element getDefaultRootElement() {
+                    return null;
+                }
+
+                @Override
+                public void render(Runnable r) {
+
+                }
+            };
+
+            document.addDocumentListener(new Paragraph("Order ID: " + order.getOrderId()));
+            document.addDocumentListener(new Paragraph("Order Customer Name: " + order.getOrderCustomerName()));
+            document.addDocumentListener(new Paragraph("Model Name: " + order.getModelName()));
+            document.addDocumentListener(new Paragraph("Small Size: " + order.getSmallSize()));
+            document.addDocumentListener(new Paragraph("Medium Size: " + order.getMediumSize()));
+            document.addDocumentListener(new Paragraph("Large Size: " + order.getLargeSize()));
+            document.addDocumentListener(new Paragraph("Agreed Price: $" + order.getOrderAgreedPrice()));
+            document.addDocumentListener(new Paragraph("Cloth Material: " + order.getClothMaterial()));
+            document.addDocumentListener(new Paragraph("Order Status: " + order.getOrderStatus()));
+            document.addDocumentListener(new Paragraph("Order Covered Amount: $" + order.getOrderCoveredAmount()));
             double totalAmount = order.getOrderAgreedPrice() *
                     (order.getSmallSize() + order.getMediumSize() + order.getLargeSize());
-            outputStream.write(("Total Amount: $" + totalAmount + "\n").getBytes());
+            document.addDocumentListener(new Paragraph("Total Amount: $" + totalAmount));
+
+            document.removeDocumentListener((DocumentListener) document);
 
             ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Disposition", "attachment; filename=order_report_" + OrderId + ".txt");
+            headers.add("Content-Disposition", "attachment; filename=order_report_" + OrderId + ".pdf");
 
             return ResponseEntity
                     .ok()
@@ -247,6 +339,17 @@ public class OrderController {
         }
     }
 
+
+
+    @PostMapping("/checkInventory")
+    public ResponseEntity<OrderDTO> checkInventory(@RequestBody Order request) {
+        boolean isInventorySufficient = orderService.checkInventory(
+                request.getModelName(),
+                request.getTotalSize(),
+                request.getClothMaterial()
+        );
+        return ResponseEntity.ok(new OrderDTO(isInventorySufficient));
+    }
 
 
 
