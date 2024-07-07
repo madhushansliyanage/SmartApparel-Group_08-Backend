@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller class for managing employees.
+ */
 @RestController
 @RequestMapping(value="/employee")
 @CrossOrigin
@@ -97,7 +100,7 @@ public class EmployeeController {
                 responseDTO.setCode(VarList.RSP_DUPLICATED);
                 responseDTO.setMessage("Employee id already exists");
                 responseDTO.setContent(employeeDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());

@@ -4,12 +4,17 @@ package com.example.SmartApparel.Operations.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.sql.Date;
+
+/**
+ * Data Transfer Object (DTO) class for Employee.
+ * This DTO class is used for transferring Employee data between different layers of the application.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class EmployeeDTO {
+
     // Employee ID
     private String empId;
 
