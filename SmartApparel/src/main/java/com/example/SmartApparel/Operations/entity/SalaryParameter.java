@@ -44,5 +44,8 @@ public class SalaryParameter {
 
     //Allowance amount pay to the employee's position
     @Column(precision = 8,scale = 2,nullable = false)
-    private BigDecimal allowance;
+    private BigDecimal allowance1;
+
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal allowance2;
 }

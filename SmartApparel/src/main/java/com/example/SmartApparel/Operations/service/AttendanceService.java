@@ -47,6 +47,7 @@ public class AttendanceService {
         if (attendanceRepo.existsById(attendanceId)) {
             // Retrieve attendance from repository and map to DTO
             Attendance attendance = attendanceRepo.findById(attendanceId).orElse(null);
+//            System.out.println(attendance.getTimeDifferenceInHours());
             return modelMapper.map(attendance, AttendanceDTO.class);
         } else {
             // Return null if attendance record not found
@@ -76,9 +77,13 @@ public class AttendanceService {
     public String addNewAttendance(AttendanceDTO attendanceDTO) {
         int response = attendanceRepo.countAttendanceByDateAndEmpId(attendanceDTO.getDate(), attendanceDTO.getEmpId());
         if (response == 0) {
-            attendanceRepo.save(modelMapper.map(attendanceDTO, Attendance.class)); // Save the new attendance record
+            // Save the new attendance record
+//            attendanceRepo.save(modelMapper.map(attendanceDTO, Attendance.class));
+            Attendance attendance = modelMapper.map(attendanceDTO, Attendance.class);
+            attendance.setDayOfWeekFromDate();
+            attendanceRepo.save(attendance);
             return VarList.RSP_SUCCESS; // Return success
-        } else{
+        } else {
             return VarList.RSP_DUPLICATED; // If attendance already exists for date,empId, return a duplicated error
         }
     }

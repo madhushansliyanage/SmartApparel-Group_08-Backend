@@ -34,5 +34,8 @@ public class SalaryParameterDTO {
     private BigDecimal etf;
 
     //Allowance amount pay to the employee's position
-    private BigDecimal allowance;
+    private BigDecimal allowance1;
+
+    //Allowance amount pay to the employee's position
+    private BigDecimal allowance2;
 }

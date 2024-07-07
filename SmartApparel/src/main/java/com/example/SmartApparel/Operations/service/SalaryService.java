@@ -1,6 +1,7 @@
 package com.example.SmartApparel.Operations.service;
 
 import com.example.SmartApparel.Operations.dto.SalaryDTO;
+import com.example.SmartApparel.Operations.entity.Attendance;
 import com.example.SmartApparel.Operations.entity.Salary;
 import com.example.SmartApparel.Operations.entity.SalaryParameter;
 import com.example.SmartApparel.Operations.repo.AttendanceRepo;
@@ -43,7 +44,8 @@ public class SalaryService {
      */
     public List<SalaryDTO> viewAllSalary() {
         List<Salary> salaryList = salaryRepo.findAll();
-        return modelMapper.map(salaryList, new TypeToken<List<SalaryDTO>>(){}.getType());
+        return modelMapper.map(salaryList, new TypeToken<List<SalaryDTO>>() {
+        }.getType());
     }
 
     /**
@@ -70,17 +72,17 @@ public class SalaryService {
     public String addNewSalary(SalaryDTO salaryDTO) {
         //getting count of salaries by employee id and yearNMonth which stored in the salaryDTO object
         int employeeSalaryCount = salaryRepo.getCalculatedSalaryCount(salaryDTO.getEmpId(), salaryDTO.getYearNMonth());
-//        System.out.println("#FROM addNewSalary(salaryDTO):- employeeSalaryCount: " + employeeSalaryCount);
+        System.out.println("#FROM addNewSalary(salaryDTO):- employeeSalaryCount: " + employeeSalaryCount);
         //checking whether exactly one row count is there
         if (employeeSalaryCount == 0) {
-//            System.out.println("#Final: salaryDTO:"+salaryDTO);
+            System.out.println("#Final: salaryDTO(before save):" + salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else if (employeeSalaryCount == 1) {
             //getting salaryID of that row
             int salaryID = salaryRepo.getSalaryIdByEmpIdAndYearNMonth(salaryDTO.getEmpId(), salaryDTO.getYearNMonth());
             salaryDTO.setSalaryId(salaryID);
-//            System.out.println("#Final: salaryDTO:"+salaryDTO);
+            System.out.println("#Final: salaryDTO(before save):" + salaryDTO);
             salaryRepo.save(modelMapper.map(salaryDTO, Salary.class));
             return VarList.RSP_SUCCESS;
         } else {
@@ -210,4 +212,47 @@ public class SalaryService {
             return VarList.RSP_DUPLICATED;
         }
     }
+
+    public BigDecimal calcMonthlyBasicSalaryOfEmployee(List<Attendance> attendanceList, BigDecimal basicSalary) {
+        //loop through attList
+        for (Attendance attendance : attendanceList) {
+            //verify whether outTime in attendance record is null
+            if(attendance.getOutTime()==null){
+                return BigDecimal.valueOf(0);
+            }
+        }
+        BigDecimal basicPerHour = basicSalary.divide(BigDecimal.valueOf(26),2,RoundingMode.HALF_UP).divide(BigDecimal.valueOf(8),2,RoundingMode.HALF_UP);
+        BigDecimal basicForMonth = BigDecimal.valueOf(0);
+
+        for (Attendance attendance : attendanceList) {
+            double workedHours;
+            if (attendance.getInTime() < 12 && attendance.getOutTime() > 13){
+                //deducting 1 hour of lunch break
+                workedHours = attendance.getTimeDifferenceInHours()-1;
+            }
+            else {//may be left AT or BEFORE 12 //may be present AT or AFTER 12
+                workedHours = attendance.getTimeDifferenceInHours();
+            }
+
+            if(!attendance.getDayOfWeek().equals("SATURDAY") && !attendance.getDayOfWeek().equals("SUNDAY")){//Weekdays
+                if (workedHours<= 8 ){
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
+                }else{//with over time calculation
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(8)));//basicForMonth+=basicPerHour*8
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-8))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-8)
+                }
+            } else if (attendance.getDayOfWeek().equals("SATURDAY")){//SATURDAYS
+                if (workedHours<=5 ){
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
+                }else{//with over time calculation
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(5)));//basicForMonth+=basicPerHour*5
+                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-5))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-5)
+                }
+            }else{//SUNDAYS
+                basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours))));//basicForMonth+=(basicPerHour*1.5)*(workedHours)
+            }
+        }
+        return basicForMonth;
+    }
+
 }

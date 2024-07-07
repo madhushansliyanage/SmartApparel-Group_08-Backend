@@ -33,23 +33,35 @@ public class Salary {
     @Column(nullable = false)
     private String yearNMonth;
 
-    // Basic salary of the employee
-    @Column(precision = 8,scale = 2)
+    // Basic salary for the month
+    @Column(precision = 8,scale = 2,nullable = false)
     private BigDecimal basic;
 
+    // OT for the month
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal overTime;
+
     // Employee's contribution to the Employees' Provident Fund (EPF)
-    @Column(precision = 8,scale = 2)
+    @Column(precision = 8,scale = 2,nullable = false)
     private BigDecimal epfByEmployee;
 
     // Company's contribution to the Employees' Provident Fund (EPF)
-    @Column(precision = 8,scale = 2)
+    @Column(precision = 8,scale = 2,nullable = false)
     private BigDecimal epfByCompany;
 
     // Employees' Trust Fund (ETF) payment
-    @Column(precision = 8,scale = 2)
+    @Column(precision = 8,scale = 2,nullable = false)
     private BigDecimal etfPayment;
 
+    // Allowance1 for the month
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal allowance1;
+
+    // Allowance2 for the month
+    @Column(precision = 8,scale = 2,nullable = false)
+    private BigDecimal allowance2;
+
     // Net salary after all deductions
-    @Column(precision = 8,scale = 2)
+    @Column(precision = 8,scale = 2,nullable = false)
     private BigDecimal netSalary;
 }

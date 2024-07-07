@@ -27,8 +27,11 @@ public class SalaryDTO {
     // Year and month for which the salary is applicable, in the format YYYY-MM
     private String yearNMonth;
 
-    // Basic salary amount
+    // Basic salary amount for the month
     private BigDecimal basic;
+
+    // OT for the month
+    private BigDecimal overTime;
 
     // Employee's contribution to the Employees' Provident Fund (EPF)
     private BigDecimal epfByEmployee;
@@ -38,6 +41,12 @@ public class SalaryDTO {
 
     // Employees' Trust Fund (ETF) payment
     private BigDecimal etfPayment;
+
+    // Allowance1 for the month
+    private BigDecimal allowance1;
+
+    // Allowance2 for the month
+    private BigDecimal allowance2;
 
     // Net salary after all deductions
     private BigDecimal netSalary;
