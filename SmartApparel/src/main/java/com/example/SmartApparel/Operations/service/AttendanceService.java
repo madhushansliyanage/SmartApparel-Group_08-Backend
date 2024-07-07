@@ -96,7 +96,9 @@ public class AttendanceService {
      */
     public String updateAttendance(AttendanceDTO attendanceDTO) {
         if (attendanceRepo.existsById(attendanceDTO.getAttendanceId())) {
-            attendanceRepo.save(modelMapper.map(attendanceDTO, Attendance.class)); // Update the attendance record
+            Attendance attendance = modelMapper.map(attendanceDTO, Attendance.class);
+            attendance.setDayOfWeekFromDate();
+            attendanceRepo.save(attendance);
             return VarList.RSP_SUCCESS; // Return success
         } else {
             return VarList.RSP_NO_DATA_FOUND; // If attendance record not found, return no data found error

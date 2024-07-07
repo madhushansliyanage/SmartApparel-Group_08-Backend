@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -131,7 +132,8 @@ public class SalaryService {
     public String calculateSalary(String empId, String yearMonth) {
 
         // Retrieve the attendance count for the given employee and month
-        int attCount = attendanceRepo.getAttendanceCount(yearMonth, empId);
+//        int attCount = attendanceRepo.getAttendanceCount(yearMonth, empId);
+        List<Attendance> attendanceList = attendanceRepo.getAttListByYearMonthAndEmpId(yearMonth, empId);
 //        System.out.println("############in calculateSalary(" + yearMonth + "," + empId + ") function##########");
 //        System.out.println("#attCount: " + attCount);
         // Retrieve the position of the employee
@@ -145,24 +147,28 @@ public class SalaryService {
 
         if (salaryParameter != null) {
             // Calculate basic salary for the month //float basicForMonth = (salaryParameter.getBasicSalary() / 26) * attCount;
-            BigDecimal basicForMonth = salaryParameter.getBasicSalary().divide(BigDecimal.valueOf(26), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(attCount));
+//            BigDecimal basicForMonth = salaryParameter.getBasicSalary().divide(BigDecimal.valueOf(26), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(attCount));
+            BigDecimal[] basicForMonth = calcMonthlyBasicSalaryOfEmployee(attendanceList,salaryParameter.getBasicSalary());
             // Calculate EPF contribution by the employee //float epfByEmployee = (basicForMonth * salaryParameter.getEpfByEmployee()) / 100;
-            BigDecimal epfByEmployee = basicForMonth.multiply(salaryParameter.getEpfByEmployee()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal epfByEmployee = basicForMonth[0].multiply(salaryParameter.getEpfByEmployee()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate EPF contribution by the company //float epfByCompany = (basicForMonth * salaryParameter.getEpfByCompany()) / 100;
-            BigDecimal epfByCompany = basicForMonth.multiply(salaryParameter.getEpfByCompany()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal epfByCompany = basicForMonth[0].multiply(salaryParameter.getEpfByCompany()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate ETF payment //float etfPayment = (basicForMonth * salaryParameter.getEtf()) / 100;
-            BigDecimal etfPayment = basicForMonth.multiply(salaryParameter.getEtf()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            BigDecimal etfPayment = basicForMonth[0].multiply(salaryParameter.getEtf()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             // Calculate net salary //float netSalary = basicForMonth - epfByEmployee;
-            BigDecimal netSalary = basicForMonth.subtract(epfByEmployee);
+            BigDecimal netSalary = basicForMonth[0].subtract(epfByEmployee).add(basicForMonth[1]).add(salaryParameter.getAllowance1()).add(salaryParameter.getAllowance2());
 
             // Create a SalaryDTO object with calculated values
             salaryDTO.setEmpId(empId);
             salaryDTO.setStatus("Pending");
             salaryDTO.setYearNMonth(yearMonth);
-            salaryDTO.setBasic(basicForMonth);
+            salaryDTO.setBasic(basicForMonth[0]);
+            salaryDTO.setOverTime(basicForMonth[1]);
             salaryDTO.setEpfByEmployee(epfByEmployee);//salaryDTO.setEpfByEmployee((float) (Math.ceil(epfByEmployee * 100) / 100));
             salaryDTO.setEpfByCompany(epfByCompany);//salaryDTO.setEpfByCompany((float) (Math.ceil(epfByCompany * 100) / 100));
             salaryDTO.setEtfPayment(etfPayment);//salaryDTO.setEtfPayment((float) (Math.ceil(etfPayment * 100) / 100));
+            salaryDTO.setAllowance1(salaryParameter.getAllowance1());
+            salaryDTO.setAllowance2(salaryParameter.getAllowance2());
             salaryDTO.setNetSalary(netSalary);//salaryDTO.setNetSalary((float) (Math.ceil(netSalary * 100) / 100));
         } else {
             salaryDTO.setEmpId(empId);
@@ -213,24 +219,27 @@ public class SalaryService {
         }
     }
 
-    public BigDecimal calcMonthlyBasicSalaryOfEmployee(List<Attendance> attendanceList, BigDecimal basicSalary) {
+    public BigDecimal[] calcMonthlyBasicSalaryOfEmployee(List<Attendance> attendanceList, BigDecimal basicSalary) {
         //loop through attList
         for (Attendance attendance : attendanceList) {
             //verify whether outTime in attendance record is null
             if(attendance.getOutTime()==null){
-                return BigDecimal.valueOf(0);
+                return new BigDecimal[] { BigDecimal.valueOf(0), BigDecimal.valueOf(0) };
             }
         }
         BigDecimal basicPerHour = basicSalary.divide(BigDecimal.valueOf(26),2,RoundingMode.HALF_UP).divide(BigDecimal.valueOf(8),2,RoundingMode.HALF_UP);
         BigDecimal basicForMonth = BigDecimal.valueOf(0);
+        BigDecimal overTimeForMonth = BigDecimal.valueOf(0);
 
         for (Attendance attendance : attendanceList) {
             double workedHours;
-            if (attendance.getInTime() < 12 && attendance.getOutTime() > 13){
-                //deducting 1 hour of lunch break
-                workedHours = attendance.getTimeDifferenceInHours()-1;
-            }
-            else {//may be left AT or BEFORE 12 //may be present AT or AFTER 12
+            LocalTime inTime = attendance.getInTime().toLocalTime();
+            LocalTime outTime = attendance.getOutTime().toLocalTime();
+
+            if (inTime.isBefore(LocalTime.NOON) && outTime.isAfter(LocalTime.of(13, 0))) {
+                // Deducting 1 hour of lunch break
+                workedHours = attendance.getTimeDifferenceInHours() - 1;
+            } else { // May be left AT or BEFORE 12 // May be present AT or AFTER 12
                 workedHours = attendance.getTimeDifferenceInHours();
             }
 
@@ -239,20 +248,20 @@ public class SalaryService {
                     basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
                 }else{//with over time calculation
                     basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(8)));//basicForMonth+=basicPerHour*8
-                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-8))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-8)
+                    overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-8))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-8)
                 }
             } else if (attendance.getDayOfWeek().equals("SATURDAY")){//SATURDAYS
                 if (workedHours<=5 ){
                     basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(workedHours)));//basicForMonth+=basicPerHour*workedHours
                 }else{//with over time calculation
                     basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(5)));//basicForMonth+=basicPerHour*5
-                    basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-5))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-5)
+                    overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours-5))));//basicForMonth+=(basicPerHour*1.5)*(workedHours-5)
                 }
             }else{//SUNDAYS
-                basicForMonth = basicForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours))));//basicForMonth+=(basicPerHour*1.5)*(workedHours)
+                overTimeForMonth = overTimeForMonth.add(basicPerHour.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf((workedHours))));//basicForMonth+=(basicPerHour*1.5)*(workedHours)
             }
         }
-        return basicForMonth;
+        return new BigDecimal[] { basicForMonth, overTimeForMonth };
     }
 
 }
