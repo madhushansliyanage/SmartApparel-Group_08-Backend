@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e1769ed-0d56-458b-8a84-a7fde96e1aca" name="Changes" comment="" />
+    <list default="true" id="1e1769ed-0d56-458b-8a84-a7fde96e1aca" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/dto/InventoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/dto/InventoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/entity/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/entity/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/repo/InventoryRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/repo/InventoryRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -20,6 +29,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
   <component name="ProjectId" id="2dwfB61PXXe3Bxbzexb4SUWg5cR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -34,11 +46,15 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Virajini",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Rashmika/Documents/UOR/Academics/Level 3/Semester 1/Group Project/Development/BackEnd/SmartApparel-Group_08-Backend/SmartApparel/src/main/java/com/example/SmartApparel/Operations/controller/CustomerController.java",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -50,6 +66,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -71,6 +94,7 @@
       <workItem from="1712467474111" duration="200000" />
       <workItem from="1712907983312" duration="160000" />
       <workItem from="1712908203764" duration="116000" />
+      <workItem from="1718074617580" duration="4549000" />
     </task>
     <servers />
   </component>
