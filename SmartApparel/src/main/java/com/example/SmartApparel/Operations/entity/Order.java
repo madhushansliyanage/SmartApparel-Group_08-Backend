@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.sql.Update;
 
 @Entity
 @AllArgsConstructor
@@ -17,6 +16,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
+
     private String OrderCustomerName;
     private double OrderAgreedPrice;
     private String ModelName;
@@ -26,11 +26,13 @@ public class Order {
     private String ClothMaterial;
     private String OrderStatus;
 
-    @Lob
-    private byte[] billPdf;
+    @Column(nullable = true)
+    private int OrderCoveredAmount;
+
+    @Column(nullable = true)
+    private int totalSize;
 
 //    private int Quantity;
-
 
     @Enumerated(EnumType.STRING)
 
@@ -108,12 +110,20 @@ public class Order {
         this.OrderStatus = OrderStatus;
     }
 
-    public byte[] getBillPdf() {
-        return billPdf;
+    public int getOrderCoveredAmount() {
+        return OrderCoveredAmount;
     }
-    public void setBillPdf(byte[] billPdf) {
-        this.billPdf = billPdf;
+    public void setOrderCoveredAmount(int OrderCoveredAmount) {
+        this.OrderCoveredAmount = OrderCoveredAmount;
     }
+
+    public int getTotalSize() {
+        return totalSize;
+    }
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
+    }
+
 }
 
 
