@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity class representing the Revenue table.
+ */
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Table(name = "Revenue")
-
 public class Revenue {
 
     @Id
@@ -18,6 +21,8 @@ public class Revenue {
     private int Revenue_ID;
     private String Date;
     private String Description;
-    private String Category;
+    private String Cheque_Id;
+    private String Order_Id;
+    private String Status;
     private Double Amount;
 }

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing revenue.
+ */
 @RestController
 @RequestMapping("api/v1/revenue")
 @CrossOrigin

@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity class representing the Expense table.
+ */
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

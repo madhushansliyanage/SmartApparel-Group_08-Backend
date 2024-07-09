@@ -9,11 +9,18 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class OrderDTO {
-
     // Properties of the OrderDTO class
     private int OrderId;
     private String OrderCustomerName;
-    private String OrderAddress;
-    private String OrderEmail;
-    private String OrderPhoneNum;
+    private double OrderAgreedPrice;
+    private String ModelName;
+    private int SmallSize;
+    private int MediumSize;
+    private int LargeSize;
+    private String ClothMaterial;
+    private String OrderStatus;
+
+    public boolean get() {
+        return true;
+    }
 }
