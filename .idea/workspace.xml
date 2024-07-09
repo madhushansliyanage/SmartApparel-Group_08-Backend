@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e1769ed-0d56-458b-8a84-a7fde96e1aca" name="Changes" comment="" />
+    <list default="true" id="1e1769ed-0d56-458b-8a84-a7fde96e1aca" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/dto/InventoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/dto/InventoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/entity/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/entity/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/repo/InventoryRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/java/com/example/SmartApparel/Operations/repo/InventoryRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SmartApparel/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/SmartApparel/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +22,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -34,6 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.SmartApparelApplication.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
+
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/HP/Documents/UOR/Academics/Level 3/Semester 1/Group Project/Development/BackEnd/SmartApparel-Group_08-Backend",
@@ -57,6 +65,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
+
         <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
         <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
       </set>
@@ -82,6 +91,7 @@
       <workItem from="1712467474111" duration="200000" />
       <workItem from="1712907983312" duration="160000" />
       <workItem from="1712908203764" duration="116000" />
+
       <workItem from="1714206299206" duration="16108000" />
       <workItem from="1714278157586" duration="990000" />
       <workItem from="1714291019353" duration="1157000" />
