@@ -78,6 +78,7 @@ public class OrderService {
     public OrderDTO viewOrderById(Integer OrderId) throws Exception {
         // Retrieve order by ID from the repository
         Optional<Order> optionalOrder = orderRepo.findById(OrderId);
+//                findById(OrderId);
 
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
@@ -104,7 +105,7 @@ public class OrderService {
     }
 
 
-//    public boolean checkInventory(String modelName, int totalSize, String clothMaterial) {
+    public boolean checkInventory(String modelName, int totalSize, String clothMaterial) {
 //        Model model = modelRepository.findByName(modelName);
 //        int requiredCloth = totalSize * model.getClothAmount();
 //        int requiredButton = totalSize * model.getButtonAmount();
@@ -117,7 +118,8 @@ public class OrderService {
 //                inventory.getButton() >= requiredButton &&
 //                inventory.getZipper() >= requiredZipper &&
 //                inventory.getElastic() >= requiredElastic;
-//    }
+        return false;
+    }
 
 
 

@@ -12,7 +12,7 @@ public interface OrderRepo extends JpaRepository <Order,Integer>{
     @Query(value = "SELECT order_id FROM orders where order_status='Completed'", nativeQuery = true)
     List<Integer> getCompletedOrders();
 
-    Optional<Order> findById(Integer OrderId);
-
-    Optional<Order> findByClothMaterial(String ClothMaterial);
+//    Optional<Order> findById(Integer OrderId);
+//
+//    Optional<Order> findByClothMaterial(String ClothMaterial);
 }

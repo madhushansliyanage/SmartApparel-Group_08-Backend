@@ -16,6 +16,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int OrderId;
+
     private String OrderCustomerName;
     private double OrderAgreedPrice;
     private String ModelName;
@@ -24,8 +25,11 @@ public class Order {
     private int LargeSize;
     private String ClothMaterial;
     private String OrderStatus;
+
+    @Column(nullable = true)
     private int OrderCoveredAmount;
 
+    @Column(nullable = true)
     private int totalSize;
 
 //    private int Quantity;

@@ -29,7 +29,7 @@ public class OrderDTO {
 
     private boolean isInventorySufficient;
 
-    public OrderDTO() {}
+//    public OrderDTO() {}
 
     public OrderDTO(boolean isInventorySufficient) {
         this.isInventorySufficient = isInventorySufficient;

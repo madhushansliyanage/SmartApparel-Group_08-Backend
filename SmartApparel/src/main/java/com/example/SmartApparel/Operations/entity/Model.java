@@ -17,9 +17,9 @@ import java.sql.Blob;
 public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int ModelId;
+    private int ModelId;
     private String ModelName;
-    private Blob ModelImage;
+//    private Blob ModelImage;
     private String ClothMaterial;
     private int clothAmount;
     private int buttonAmount;

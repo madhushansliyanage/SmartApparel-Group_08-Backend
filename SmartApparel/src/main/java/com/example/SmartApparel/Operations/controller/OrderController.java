@@ -112,11 +112,18 @@ public class OrderController {
     @GetMapping (value = "/viewOrder")
     public ResponseEntity viewOrder(){
         try {
-            // Retrieve list of orders
             List<OrderDTO> orderDTOList = orderService.viewOrder();
-            responseDTO.setCode(VarList.RSP_SUCCESS);
-            responseDTO.setMessage("Saved Successfully.");
-            responseDTO.setContent(orderDTOList);
+            if (orderDTOList.isEmpty()){
+                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("No data found.");
+                responseDTO.setContent(orderDTOList);
+            }
+            else {
+                responseDTO.setCode(VarList.RSP_SUCCESS);
+                responseDTO.setMessage("Saved Successfully.");
+                responseDTO.setContent(orderDTOList);
+            }
+            // Retrieve list of orders
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
         }catch (Exception e){
             responseDTO.setCode(VarList.RSP_ERROR);
@@ -314,13 +321,13 @@ public class OrderController {
             document.addDocumentListener(new Paragraph("Small Size: " + order.getSmallSize()));
             document.addDocumentListener(new Paragraph("Medium Size: " + order.getMediumSize()));
             document.addDocumentListener(new Paragraph("Large Size: " + order.getLargeSize()));
-            document.addDocumentListener(new Paragraph("Agreed Price: $" + order.getOrderAgreedPrice()));
+            document.addDocumentListener(new Paragraph("Agreed Price: Rs." + order.getOrderAgreedPrice()));
             document.addDocumentListener(new Paragraph("Cloth Material: " + order.getClothMaterial()));
             document.addDocumentListener(new Paragraph("Order Status: " + order.getOrderStatus()));
-            document.addDocumentListener(new Paragraph("Order Covered Amount: $" + order.getOrderCoveredAmount()));
+            document.addDocumentListener(new Paragraph("Order Covered Amount: Rs." + order.getOrderCoveredAmount()));
             double totalAmount = order.getOrderAgreedPrice() *
                     (order.getSmallSize() + order.getMediumSize() + order.getLargeSize());
-            document.addDocumentListener(new Paragraph("Total Amount: $" + totalAmount));
+            document.addDocumentListener(new Paragraph("Total Amount: Rs." + totalAmount));
 
             document.removeDocumentListener((DocumentListener) document);
 
@@ -338,7 +345,6 @@ public class OrderController {
                     .body(null);
         }
     }
-
 
 
     @PostMapping("/checkInventory")
@@ -373,19 +379,3 @@ public class OrderController {
     }
 
 }
-
-//public class OrderStatusResponse {
-//    private String OrderStatus;
-//
-//    public OrderStatusResponse(String OrderStatus) {
-//        this.OrderStatus = OrderStatus;
-//    }
-//
-//    public String getOrderStatus() {
-//        return OrderStatus;
-//    }
-//
-//    public void setOrderStatus(String OrderStatus) {
-//        this.OrderStatus = OrderStatus;
-//    }
-//}
