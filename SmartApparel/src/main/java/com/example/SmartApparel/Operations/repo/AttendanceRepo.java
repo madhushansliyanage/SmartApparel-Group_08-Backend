@@ -40,4 +40,7 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
      */
     @Query(value = "SELECT COUNT(attendance_id) as attendance_count FROM attendance WHERE DATE_FORMAT(date, '%Y-%m') = ?1 AND emp_id=?2", nativeQuery = true)
     int getAttendanceCount(String date, String empId);
+
+    @Query(value = "SELECT * FROM attendance WHERE DATE_FORMAT(date, '%Y-%m') = ?1 AND emp_id=?2", nativeQuery = true)
+    List<Attendance> getAttListByYearMonthAndEmpId(String yearMonth, String empId);
 }

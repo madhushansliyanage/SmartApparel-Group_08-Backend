@@ -29,4 +29,6 @@ public class AttendanceDTO {
 
     // Employee ID associated with this attendance record
     private String empId;
+
+    private String dayOfWeek;
 }
