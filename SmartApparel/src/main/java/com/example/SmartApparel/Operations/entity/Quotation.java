@@ -1,47 +1,22 @@
 package com.example.SmartApparel.Operations.entity;
-//import javax.persistence.*;
-import java.util.List;
+
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
-@Entity//class mapped to database
-@AllArgsConstructor //generate a constructor with all fields as parameters
-@NoArgsConstructor//generate a no-arguments constructor
-@Data//generate getters, setters, equals, hashCode, and toString methods
-@Table(name = "Quotation")
-
+@Entity
+@Data
+@Table(name = "quotation_2")
 public class Quotation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    private String name;
-    private String email;
-    private String contactNumber;
+    @Embedded
+    private UserInfo userInfo;
 
-
-    @OneToMany(mappedBy = "quotation", cascade = CascadeType.ALL)
-    private List<ClothingType> clothingTypes;
-
-    @OneToMany(mappedBy = "quotation", cascade = CascadeType.ALL)
-    private List<Image> images;
-
-    @OneToMany(mappedBy = "quotation", cascade = CascadeType.ALL)
-    private List<Quantity> quantities;
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ClothItem> clothItems;
 }
-
-
