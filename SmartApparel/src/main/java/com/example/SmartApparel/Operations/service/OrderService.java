@@ -29,15 +29,13 @@ public class OrderService {
 
     // Method to save a new order
     public String saveOrder(OrderDTO orderDTO) {
-        // Check if an order with the given ID already exists
-        if (orderRepo.existsById(orderDTO.getOrderId())) {
-            return VarList.RSP_DUPLICATED;
-        } else {
-            // Save the order to the database
-            orderRepo.save(modelMapper.map(orderDTO, Order.class));
-            return VarList.RSP_SUCCESS;
-        }
+        // Map OrderDTO to Order entity
+        Order order = modelMapper.map(orderDTO, Order.class);
+        // Save the order to the database
+        orderRepo.save(order);
+        return VarList.RSP_SUCCESS;
     }
+
 
     // Method to update an existing order
     public String updateOrder(OrderDTO orderDTO){
@@ -80,6 +78,7 @@ public class OrderService {
     public OrderDTO viewOrderById(Integer OrderId) throws Exception {
         // Retrieve order by ID from the repository
         Optional<Order> optionalOrder = orderRepo.findById(OrderId);
+//                findById(OrderId);
 
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
@@ -105,72 +104,24 @@ public class OrderService {
         return orderRepo.findById(OrderId).orElse(null);
     }
 
-//    public boolean checkOrderShipped(Integer OrderId) {
-//        try {
-//            OrderDTO order = viewOrderById(OrderId);
-//            if (order.get()) if ("Shipped".equalsIgnoreCase(String.valueOf(order.get()))) return true;
-//            return false;
-//        } catch (Exception e) {
-//            // Handle exception
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 
-//    public boolean checkInventoryAndAllocateMaterials(Order order, Object UpdateOrderStatus) {
-//        order = orderRepo.findById(order.getOrderId()).orElse(null);
-//        if (order != null) {
-//            // Perform inventory check logic
-//            if (order.getOrderAmount() > order.getQuantity()//get current order quantity ){
-//                boolean inventoryCheckPassed = performInventoryCheck(order);
-//                if (inventoryCheckPassed) {
-//                    // Allocate materials and update order status
-//                    order.getClass(UpdateOrderStatus.PENDING);
-//                    orderRepo.save(order);
-//                    return modelMapper.map(order, OrderDTO.class);
-//                }
-//            }
-//            else {
-//                // Handle insufficient inventory scenario
-//                responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//                responseDTO.setMessage("Insufficient amount of materials.");
-//                //responseDTO.setContent(null);
-//                return Boolean.parseBoolean(null);
-//            }
-//        }
-//        return Boolean.parseBoolean(null); // Return null if the order is not found
-//    }
+    public boolean checkInventory(String modelName, int totalSize, String clothMaterial) {
+//        Model model = modelRepository.findByName(modelName);
+//        int requiredCloth = totalSize * model.getClothAmount();
+//        int requiredButton = totalSize * model.getButtonAmount();
+//        int requiredZipper = totalSize * model.getZipperAmount();
+//        int requiredElastic = totalSize * model.getElasticAmount();
 //
-//    private boolean performInventoryCheck(Order orderId) {
-//        boolean sufficientMaterials = checkInventoryAndAllocateMaterials(orderId, UpdateOrderStatus);
+//        Inventory inventory = OrderRepo.findByClothMaterial(clothMaterial);
 //
-//        if (sufficientMaterials) {
-//            // Allocate materials and update order status
-//            UpdateOrderStatus(orderId);
-//        } else {
-//            // Handle case when there are insufficient materials
-//            responseDTO.setCode(VarList.RSP_NO_DATA_FOUND);
-//            responseDTO.setMessage("Insufficient amount of materials.");
-//            //responseDTO.setContent(null);
-//            //return null;
-//        }
-//        return true;
-//    }
+//        return inventory.getClothMaterial() >= requiredCloth &&
+//                inventory.getButton() >= requiredButton &&
+//                inventory.getZipper() >= requiredZipper &&
+//                inventory.getElastic() >= requiredElastic;
+        return false;
+    }
 
 
-    // Method to search for an order by ID
-//    public OrderDTO searchOrder(int OrderId){
-//        // Check if an order with the given ID exists
-//        if (orderRepo.existsById(OrderId)){
-//            // Retrieve the order from the database
-////            Order order = orderRepo.findById(OrderId).orElse(null);
-//            Order order = orderRepo.searchOrder(OrderId);
-//            // Map the entity to a DTO and return
-//            return modelMapper.map(order,OrderDTO.class);
-//        }else {
-//            return null;
-//        }
-//    }
 
     public List<Integer> getCompletedOrderIds() {
 
@@ -179,6 +130,4 @@ public class OrderService {
         // Map the list of entities to a list of DTOs
         return modelMapper.map(orderIdList, new TypeToken<ArrayList<Integer>>(){}.getType());
     }
-
-
 }
